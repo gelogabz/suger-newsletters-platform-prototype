@@ -6,7 +6,7 @@ function renderLayout() {
         <span class="masthead-dot"></span>
         <span class="masthead-wordmark">Suger Cube</span>
         <span class="masthead-sep"></span>
-        <span class="masthead-by">Cloud intelligence. Distilled. Delivered.</span>
+        <span class="masthead-by">Cloud Marketplace, Decoded.</span>
       </div>
     </header>
     <div class="layout">
