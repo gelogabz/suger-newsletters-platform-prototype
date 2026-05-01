@@ -22,8 +22,10 @@ function ensureNewsletterVisible(id) {
   const item = document.querySelector(`.sidebar-item[data-id="${id}"]`);
   if (!item) return;
   const yearGroup = item.closest(".sidebar-year-group");
-  if (yearGroup?.classList.contains("collapsed")) yearGroup.classList.remove("collapsed");
-  if (item.classList.contains("sidebar-month-extra")) yearGroup?.classList.add("months-expanded");
+  if (yearGroup?.classList.contains("collapsed"))
+    yearGroup.classList.remove("collapsed");
+  if (item.classList.contains("sidebar-month-extra"))
+    yearGroup?.classList.add("months-expanded");
 }
 
 function selectNewsletter(id) {
@@ -140,11 +142,15 @@ function applyFilters() {
   document.querySelectorAll(".filter-pill[data-tag]").forEach((pill) => {
     pill.classList.toggle("active", activeFilters.has(pill.dataset.tag));
   });
-  document.getElementById("filter-all")?.classList.toggle("active", activeFilters.size === 0);
+  document
+    .getElementById("filter-all")
+    ?.classList.toggle("active", activeFilters.size === 0);
   document.querySelectorAll(".sidebar-item[data-id]").forEach((item) => {
     const matches =
       activeFilters.size === 0 ||
-      [...activeFilters].some((tag) => newsletterTags[item.dataset.id]?.has(tag));
+      [...activeFilters].some((tag) =>
+        newsletterTags[item.dataset.id]?.has(tag),
+      );
     item.classList.toggle("dimmed", !matches);
   });
 }
@@ -156,9 +162,12 @@ function toggleYearGroup(year) {
 }
 
 function toggleMoreMonths(year) {
-  const group = document.querySelector(`.sidebar-year-group[data-year="${year}"]`);
+  const group = document.querySelector(
+    `.sidebar-year-group[data-year="${year}"]`,
+  );
   if (!group) return;
   const isExpanded = group.classList.toggle("months-expanded");
   const btn = group.querySelector(".sidebar-show-more");
-  if (btn) btn.textContent = isExpanded ? "Show less" : `+ ${btn.dataset.extra} more`;
+  if (btn)
+    btn.textContent = isExpanded ? "Show less" : `+ ${btn.dataset.extra} more`;
 }

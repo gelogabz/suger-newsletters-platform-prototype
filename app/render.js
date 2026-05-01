@@ -1,9 +1,12 @@
 function renderFilterBar() {
-  const pills = Object.entries(tagMeta).map(([id, m]) =>
-    `<button class="filter-pill" data-tag="${id}"
+  const pills = Object.entries(tagMeta)
+    .map(
+      ([id, m]) =>
+        `<button class="filter-pill" data-tag="${id}"
       style="--pill-bg:${m.badgeBg};--pill-text:${m.badgeText};--pill-border:${m.border}"
-      onclick="toggleFilter('${id}')">${m.label}</button>`
-  ).join('');
+      onclick="toggleFilter('${id}')">${m.label}</button>`,
+    )
+    .join("");
   return `<div class="filterbar" id="filterbar">
     <span class="filterbar-label">Filter</span>
     <button class="filter-pill active" id="filter-all" onclick="clearFilters()">All</button>
@@ -15,48 +18,60 @@ function renderLayout() {
   const first = newsletters[0];
 
   const yearMap = {};
-  newsletters.forEach(nl => {
-    const year = nl.date.split(' ').pop();
+  newsletters.forEach((nl) => {
+    const year = nl.date.split(" ").pop();
     if (!yearMap[year]) yearMap[year] = [];
     yearMap[year].push(nl);
   });
-  const sortedYears = Object.keys(yearMap).sort((a, b) => Number(b) - Number(a));
+  const sortedYears = Object.keys(yearMap).sort(
+    (a, b) => Number(b) - Number(a),
+  );
   const VISIBLE_YEARS = 2;
   const VISIBLE_MONTHS = 6;
 
-  const sidebarGroups = sortedYears.map((year, yi) => {
-    const nls = yearMap[year];
-    const isYearCollapsed = yi >= VISIBLE_YEARS;
-    const monthItems = nls.map((nl, ni) => {
-      const isActive = nl.id === first.id;
-      const isExtra = ni >= VISIBLE_MONTHS;
-      const nlTopics = nl.topicIds.map(id => topicMap[id]).filter(Boolean);
-      return `
-        <button class="sidebar-item${isActive ? ' active' : ''}${isExtra ? ' sidebar-month-extra' : ''}" data-id="${nl.id}" onclick="selectNewsletter('${nl.id}')">
+  const sidebarGroups = sortedYears
+    .map((year, yi) => {
+      const nls = yearMap[year];
+      const isYearCollapsed = yi >= VISIBLE_YEARS;
+      const monthItems = nls
+        .map((nl, ni) => {
+          const isActive = nl.id === first.id;
+          const isExtra = ni >= VISIBLE_MONTHS;
+          const nlTopics = nl.topicIds
+            .map((id) => topicMap[id])
+            .filter(Boolean);
+          return `
+        <button class="sidebar-item${isActive ? " active" : ""}${isExtra ? " sidebar-month-extra" : ""}" data-id="${nl.id}" onclick="selectNewsletter('${nl.id}')">
           <div class="sidebar-date">${nl.date}</div>
           <div class="sidebar-title">${nl.title}</div>
         </button>
-        <div class="sidebar-topics${isActive ? ' visible' : ''}" data-nl="${nl.id}">
-          ${nlTopics.map((t, ti) => `
+        <div class="sidebar-topics${isActive ? " visible" : ""}" data-nl="${nl.id}">
+          ${nlTopics
+            .map(
+              (t, ti) => `
             <button class="sidebar-topic-item" onclick="navigateToTopic('${nl.id}','${t.id}')">
-              <span class="sidebar-topic-num">${String(ti + 1).padStart(2, '0')}</span>
+              <span class="sidebar-topic-num">${String(ti + 1).padStart(2, "0")}</span>
               <span class="sidebar-topic-label">${t.title}</span>
-            </button>`).join('')}
+            </button>`,
+            )
+            .join("")}
         </div>`;
-    }).join('');
-    const extraCount = nls.length - VISIBLE_MONTHS;
-    return `
-      <div class="sidebar-year-group${isYearCollapsed ? ' collapsed' : ''}" data-year="${year}">
+        })
+        .join("");
+      const extraCount = nls.length - VISIBLE_MONTHS;
+      return `
+      <div class="sidebar-year-group${isYearCollapsed ? " collapsed" : ""}" data-year="${year}">
         <button class="sidebar-year-header" onclick="toggleYearGroup('${year}')">
           <span class="sidebar-year-label">${year}</span>
           <svg class="sidebar-year-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,1 5,5 9,1"/></svg>
         </button>
         <div class="sidebar-year-body">
           ${monthItems}
-          ${extraCount > 0 ? `<button class="sidebar-show-more" data-extra="${extraCount}" onclick="toggleMoreMonths('${year}')">+ ${extraCount} more</button>` : ''}
+          ${extraCount > 0 ? `<button class="sidebar-show-more" data-extra="${extraCount}" onclick="toggleMoreMonths('${year}')">+ ${extraCount} more</button>` : ""}
         </div>
       </div>`;
-  }).join('');
+    })
+    .join("");
 
   return `
     <header class="masthead">
@@ -65,9 +80,9 @@ function renderLayout() {
           <span></span><span></span><span></span>
         </button>
         <span class="masthead-dot"></span>
-        <span class="masthead-wordmark">Suger Rush</span>
+        <span class="masthead-wordmark">Suger Cube</span>
         <span class="masthead-sep"></span>
-        <span class="masthead-by">Marketplace intelligence, refined.</span>
+        <span class="masthead-by">Cloud Marketplace, Decoded.</span>
       </div>
     </header>
     ${renderFilterBar()}

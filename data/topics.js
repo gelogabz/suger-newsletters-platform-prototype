@@ -4,7 +4,8 @@ const topics = [
   {
     id: "ai-agents",
     title: "AI Agents on the Marketplace",
-    subtitle: "How the agent layer is reshaping what ISVs list, how they bill, and who buys",
+    subtitle:
+      "How the agent layer is reshaping what ISVs list, how they bill, and who buys",
     tags: ["aws", "azure", "gcp"],
     intro:
       "With Google Cloud's Agent Marketplace now open and AWS and Azure's agent frameworks in wide production use, the question for marketplace ISVs has shifted from 'should we be here' to 'how do we compete.' The hyperscaler agent layer is where platform stickiness is being built — and where ISVs with AI-adjacent or AI-native products have a narrow window to establish a listing position before the category matures.",
@@ -20,7 +21,8 @@ const topics = [
       },
       {
         tagId: "azure",
-        headline: "AI Foundry and Copilot Studio: Agent Distribution Through M365",
+        headline:
+          "AI Foundry and Copilot Studio: Agent Distribution Through M365",
         body: "Microsoft repositioned Azure AI Foundry (announced at Ignite, November 2024) as the central hub for enterprise agent development. The distribution play is the real story: Copilot Studio lets teams build agents that live inside Teams, Outlook, and SharePoint — where enterprise knowledge workers already operate. For ISVs evaluating agent platforms, Azure's pitch is adoption through existing workflows, not a new interface your customers have to learn. Copilot Studio-integrated listings on Azure Marketplace qualify for Azure IP Co-sell Incentivized status, unlocking Microsoft's full field sales motion.",
         source: {
           label: "Azure AI Foundry Documentation",
@@ -127,14 +129,16 @@ const topics = [
   {
     id: "google-cloud-next-2026",
     title: "Google Cloud Next 2026: The Agent Marketplace Opens for Business",
-    subtitle: "What April's biggest cloud event means for ISVs on all three hyperscalers",
+    subtitle:
+      "What April's biggest cloud event means for ISVs on all three hyperscalers",
     tags: ["gcp", "aws", "azure"],
     intro:
       "Google Cloud Next 2026 (April 22–24, Mandalay Bay, Las Vegas) delivered 260 announcements to 32,000+ attendees. For ISVs and channel partners, the headline was the launch of the Agent Marketplace — a new distribution channel for partner-built AI agents inside Google Cloud — backed by a $750M partner innovation fund. Here's what changed for sellers, and what it signals across all three clouds.",
     hyperscalers: [
       {
         tagId: "gcp",
-        headline: "Agent Marketplace Opens: ISVs Can Now Sell Agents Directly to Enterprise",
+        headline:
+          "Agent Marketplace Opens: ISVs Can Now Sell Agents Directly to Enterprise",
         body: "Google Cloud launched the Agent Marketplace at Next 2026, giving ISVs a dedicated path to sell AI agents directly to enterprise buyers inside Google Cloud Marketplace. At launch, 70+ pre-built partner agents are available from Salesforce, SAP, ServiceNow, Workday, Atlassian, Box, Oracle, Palo Alto Networks, and others — all discoverable within Gemini Enterprise. Google simultaneously announced a $750M partner innovation fund offering engineering support, tooling, and incentives for agent development, and introduced forward-deployed Google Cloud engineers for customers of select strategic partners. A dedicated Partner Summit on April 21 gave ecosystem partners early roadmap access and co-sell alignment before the main event.",
         source: {
           label: "Google Cloud Next 2026 Wrap Up",
@@ -152,7 +156,8 @@ const topics = [
       },
       {
         tagId: "azure",
-        headline: "Microsoft Doubles Down on M365 as the Agent Distribution Advantage",
+        headline:
+          "Microsoft Doubles Down on M365 as the Agent Distribution Advantage",
         body: "Rather than launching a competing agent marketplace, Microsoft continued building on Copilot Studio's distribution strength: agents built with Copilot Studio run inside Teams, Outlook, and SharePoint — reaching enterprise users without requiring a separate purchase decision. Azure AI Foundry remains the development control plane, with Azure Marketplace as the transact layer. For ISVs evaluating where to invest agent listing resources, Microsoft's answer to Google's Agent Marketplace is channel penetration through M365's installed base — a different bet, but one with significant enterprise reach.",
         source: {
           label: "Azure AI Foundry Documentation",
@@ -373,14 +378,16 @@ const topics = [
   {
     id: "payment-disbursement",
     title: "When Does the Money Land?",
-    subtitle: "Settlement timelines across AWS, Azure, and GCP — and why they matter for ISV cash flow",
+    subtitle:
+      "Settlement timelines across AWS, Azure, and GCP — and why they matter for ISV cash flow",
     tags: ["aws", "azure", "gcp"],
     intro:
       "Closing a marketplace deal and receiving payment are two different events. Settlement timelines vary by hyperscaler, billing model, and customer payment terms — and the gap between contract signature and cash in your account can range from days to months. For ISVs modeling cash flow, planning vendor commitments, or recognizing revenue, understanding the disbursement cycle is foundational.",
     hyperscalers: [
       {
         tagId: "aws",
-        headline: "Daily or Monthly Disbursements — but Only After the Customer Pays",
+        headline:
+          "Daily or Monthly Disbursements — but Only After the Customer Pays",
         body: "AWS offers sellers the choice of daily or monthly disbursements, with funds released only after the customer has paid their invoice. For annual upfront deals where buyers pay immediately, turnaround is fast. For enterprise customers on net-30 or net-60 invoice terms, ISVs may wait 60–90 days from deal close to cash receipt. In May 2025, AWS added partial disbursement support: sellers now receive funds proportionally as buyers make partial payments on installment plans, rather than waiting for full invoice settlement. Disbursements typically arrive in the seller's bank account 1–2 business days after the AWS disbursement date.",
         source: {
           label: "AWS Marketplace Disbursement Docs",
@@ -413,7 +420,8 @@ const topics = [
   {
     id: "revenue-share-fees",
     title: "What the House Takes",
-    subtitle: "Marketplace fee structures across AWS, Azure, and GCP — modeled for ISV deal desks",
+    subtitle:
+      "Marketplace fee structures across AWS, Azure, and GCP — modeled for ISV deal desks",
     tags: ["aws", "azure", "gcp"],
     intro:
       "Every cloud marketplace charges sellers a fee on transactions. What's less obvious is how those fees vary by deal type, listing category, channel structure, and partner program status. For ISVs building a marketplace business case — or running deal desk math on a specific opportunity — getting the fee structure right isn't optional. Marketplace fees directly affect net margin, reseller economics, and how you price private offers.",
@@ -438,7 +446,8 @@ const topics = [
       },
       {
         tagId: "gcp",
-        headline: "Variable Fees Since April 2025 — Lower for Renewals and Channel",
+        headline:
+          "Variable Fees Since April 2025 — Lower for Renewals and Channel",
         body: "Google Cloud introduced a variable revenue share model effective April 21, 2025, governed by the Vendor Net Revenue Schedule. New deals carry a 3% marketplace fee (ISV keeps 97%). Renewals are charged 1.5% (ISV keeps 98.5%). Channel shifts and migrations may qualify for further reduced rates. The applicable rate is determined per transaction based on deal type, total contract value, and other attributes in the schedule. This variable model rewards ISVs for driving renewal and channel volume through GCP Marketplace.",
         source: {
           label: "GCP Vendor Net Revenue Schedule",
@@ -453,14 +462,16 @@ const topics = [
   {
     id: "tax-marketplace-facilitator",
     title: "The Tax You Don't See",
-    subtitle: "How marketplace facilitator laws work — and what ISVs still owe on their own",
+    subtitle:
+      "How marketplace facilitator laws work — and what ISVs still owe on their own",
     tags: ["aws", "azure", "gcp"],
     intro:
       "Under marketplace facilitator laws now active in every US state with a sales tax, AWS, Azure, and GCP are legally responsible for collecting and remitting sales tax on transactions processed through their platforms. This is one of the most significant compliance advantages of marketplace distribution: tax liability shifts to the platform for covered transactions. But the rules have important limits — and a growing set of international nuances — that ISVs need to understand before assuming they're fully covered.",
     hyperscalers: [
       {
         tagId: "aws",
-        headline: "Expanding Global Tax Facilitation — With Notable 2025 Updates",
+        headline:
+          "Expanding Global Tax Facilitation — With Notable 2025 Updates",
         body: "AWS operates as the marketplace facilitator for US state sales tax on all qualifying marketplace transactions, collecting and remitting without ISV involvement. In 2025, AWS significantly expanded its international tax facilitation: Swiss VAT collection began January 15, 2025; Korean VAT and Japanese Consumption Tax (10% each) took effect April 1, 2025, with AWS collecting and issuing qualified tax invoices on behalf of ISVs in those jurisdictions. For CPPO channel transactions, AWS manages tax collection in Canada, South Korea, India, and Japan — but in other geographies, ISVs and resellers must settle tax obligations between themselves.",
         source: {
           label: "AWS Marketplace Tax Help for Sellers",
@@ -469,7 +480,8 @@ const topics = [
       },
       {
         tagId: "azure",
-        headline: "Microsoft Handles Tax in Covered Jurisdictions — ISV Nexus Rules Still Apply",
+        headline:
+          "Microsoft Handles Tax in Covered Jurisdictions — ISV Nexus Rules Still Apply",
         body: "Microsoft collects and remits applicable sales tax, VAT, and GST for Azure Marketplace transactions in covered jurisdictions, relieving ISVs of direct tax obligations on those sales. The Publisher Agreement defines the scope of Microsoft's tax responsibility. However, ISVs with their own tax nexus in a jurisdiction — through employees, offices, or revenue thresholds — may have independent obligations that exist alongside Microsoft's facilitated collection. Professional services, support contracts, and any billing that flows outside Azure Marketplace retain the ISV's full tax liability.",
         source: {
           label: "Azure Marketplace Tax and Payout FAQ",
@@ -583,7 +595,8 @@ const topics = [
     title: "re:Invent 2025: The Marketplace Seller's Debrief",
     subtitle: "Cutting through the noise on announcements that affect ISVs",
     tags: ["aws", "pricing"],
-    intro: "AWS re:Invent 2025 ran late November into early December. As always, the announcements span everything from chipsets to database services — this topic focuses on what's directly relevant to marketplace sellers and co-sell programs.",
+    intro:
+      "AWS re:Invent 2025 ran late November into early December. As always, the announcements span everything from chipsets to database services — this topic focuses on what's directly relevant to marketplace sellers and co-sell programs.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -591,15 +604,18 @@ const topics = [
         body: "Placeholder content. This section will cover key marketplace-relevant announcements from re:Invent 2025, including any new listing types, co-sell program updates, and fee structure changes announced on stage or in the partner track.",
       },
     ],
-    implications: "Placeholder: Action items for ISVs based on re:Invent 2025 marketplace announcements.",
+    implications:
+      "Placeholder: Action items for ISVs based on re:Invent 2025 marketplace announcements.",
   },
 
   {
     id: "end-of-year-deal-trends-2025",
     title: "Q4 2025 Deal Velocity: Reading the Year-End Signals",
-    subtitle: "Enterprise year-end budget dynamics and their effect on marketplace close rates",
+    subtitle:
+      "Enterprise year-end budget dynamics and their effect on marketplace close rates",
     tags: ["aws", "azure", "gcp"],
-    intro: "Q4 is consistently the highest-volume quarter for marketplace transactions. Understanding why — and how to position for it — is the difference between finishing the year strong or scrambling.",
+    intro:
+      "Q4 is consistently the highest-volume quarter for marketplace transactions. Understanding why — and how to position for it — is the difference between finishing the year strong or scrambling.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -617,7 +633,8 @@ const topics = [
         body: "Placeholder content for GCP committed spend dynamics and channel offer activity as year-end approaches.",
       },
     ],
-    implications: "Placeholder: Practical advice for ISVs structuring deals in Q4 across all three clouds.",
+    implications:
+      "Placeholder: Practical advice for ISVs structuring deals in Q4 across all three clouds.",
   },
 
   // ── NOVEMBER 2025 ───────────────────────────────────────────────────────────
@@ -625,9 +642,11 @@ const topics = [
   {
     id: "ai-workloads-marketplace-2025",
     title: "AI Workloads Hit Marketplace Critical Mass",
-    subtitle: "The tipping point has passed — AI-native ISVs are now the majority of new listings",
+    subtitle:
+      "The tipping point has passed — AI-native ISVs are now the majority of new listings",
     tags: ["aws", "azure", "gcp"],
-    intro: "Placeholder. Examining the shift in marketplace listing mix toward AI-native and AI-adjacent products through Q3 2025, and what it means for ISVs whose products aren't AI-forward.",
+    intro:
+      "Placeholder. Examining the shift in marketplace listing mix toward AI-native and AI-adjacent products through Q3 2025, and what it means for ISVs whose products aren't AI-forward.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -645,15 +664,18 @@ const topics = [
         body: "Placeholder content for GCP Vertex AI ISV listing growth and early Agent Marketplace adoption signals.",
       },
     ],
-    implications: "Placeholder: What AI marketplace saturation means for non-AI ISVs and how to respond.",
+    implications:
+      "Placeholder: What AI marketplace saturation means for non-AI ISVs and how to respond.",
   },
 
   {
     id: "bedrock-vs-azure-ai-2025",
     title: "Bedrock vs. Azure AI Foundry: Choosing Your Anchor Cloud",
-    subtitle: "A framework for ISVs deciding where to invest AI listing resources first",
+    subtitle:
+      "A framework for ISVs deciding where to invest AI listing resources first",
     tags: ["aws", "azure"],
-    intro: "Placeholder. Most ISVs don't have the resources to build deep integrations on all three clouds simultaneously. This topic offers a decision framework for AWS vs. Azure AI platform investment.",
+    intro:
+      "Placeholder. Most ISVs don't have the resources to build deep integrations on all three clouds simultaneously. This topic offers a decision framework for AWS vs. Azure AI platform investment.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -666,7 +688,8 @@ const topics = [
         body: "Placeholder content on Azure AI Foundry's strengths: M365 distribution, Copilot Studio integration, CSP channel reach.",
       },
     ],
-    implications: "Placeholder: Decision criteria for ISVs picking their primary AI cloud anchor platform.",
+    implications:
+      "Placeholder: Decision criteria for ISVs picking their primary AI cloud anchor platform.",
   },
 
   // ── OCTOBER 2025 ────────────────────────────────────────────────────────────
@@ -674,9 +697,11 @@ const topics = [
   {
     id: "pricing-shifts-q4-2025",
     title: "Pricing Model Shifts: What Changed in 2025",
-    subtitle: "Usage-based billing, credit-based models, and the decline of simple per-seat SaaS",
+    subtitle:
+      "Usage-based billing, credit-based models, and the decline of simple per-seat SaaS",
     tags: ["pricing", "aws", "azure", "gcp"],
-    intro: "Placeholder. The shift toward consumption-based pricing on cloud marketplaces accelerated through 2025. This topic examines the implications for ISV deal desks and finance teams.",
+    intro:
+      "Placeholder. The shift toward consumption-based pricing on cloud marketplaces accelerated through 2025. This topic examines the implications for ISV deal desks and finance teams.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -694,15 +719,18 @@ const topics = [
         body: "Placeholder content on GCP's Procurement API usage-based billing capabilities and ISV adoption trends.",
       },
     ],
-    implications: "Placeholder: How ISVs should approach pricing model migration on marketplace.",
+    implications:
+      "Placeholder: How ISVs should approach pricing model migration on marketplace.",
   },
 
   {
     id: "revenue-recognition-marketplace-2025",
     title: "Revenue Recognition on Marketplace: The Accounting Side",
-    subtitle: "How ASC 606 applies to marketplace-transacted revenue and what ISVs get wrong",
+    subtitle:
+      "How ASC 606 applies to marketplace-transacted revenue and what ISVs get wrong",
     tags: ["pricing", "azure"],
-    intro: "Placeholder. Revenue recognition for marketplace-transacted deals carries unique complexity under ASC 606. This topic covers the key accounting considerations for marketplace-native ISVs.",
+    intro:
+      "Placeholder. Revenue recognition for marketplace-transacted deals carries unique complexity under ASC 606. This topic covers the key accounting considerations for marketplace-native ISVs.",
     hyperscalers: [
       {
         tagId: "azure",
@@ -710,17 +738,21 @@ const topics = [
         body: "Placeholder content on how Azure Marketplace billing cycles affect ASC 606 revenue recognition timing for ISVs.",
       },
     ],
-    implications: "Placeholder: Finance team checklist for marketplace revenue recognition compliance.",
+    implications:
+      "Placeholder: Finance team checklist for marketplace revenue recognition compliance.",
   },
 
   // ── SEPTEMBER 2025 ──────────────────────────────────────────────────────────
 
   {
     id: "security-certifications-overhaul-2025",
-    title: "Security Certification Overhaul: New Requirements Across All Three Clouds",
-    subtitle: "What changed in 2025 and which ISVs are already out of compliance",
+    title:
+      "Security Certification Overhaul: New Requirements Across All Three Clouds",
+    subtitle:
+      "What changed in 2025 and which ISVs are already out of compliance",
     tags: ["security", "aws", "azure", "gcp"],
-    intro: "Placeholder. 2025 saw significant updates to security certification requirements across AWS, Azure, and GCP. ISVs who haven't done a compliance review recently may be surprised.",
+    intro:
+      "Placeholder. 2025 saw significant updates to security certification requirements across AWS, Azure, and GCP. ISVs who haven't done a compliance review recently may be surprised.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -738,15 +770,19 @@ const topics = [
         body: "Placeholder content on GCP Assured Workloads policy changes and their impact on ISV compliance posture.",
       },
     ],
-    implications: "Placeholder: Priority actions for ISVs to maintain certification status across all three hyperscalers.",
+    implications:
+      "Placeholder: Priority actions for ISVs to maintain certification status across all three hyperscalers.",
   },
 
   {
     id: "compliance-requirements-mid-2025",
-    title: "Regulated Industry Listings: FSI, Healthcare, and Government Requirements",
-    subtitle: "What the hyperscalers now require before you can sell to regulated segments",
+    title:
+      "Regulated Industry Listings: FSI, Healthcare, and Government Requirements",
+    subtitle:
+      "What the hyperscalers now require before you can sell to regulated segments",
     tags: ["security", "gcp"],
-    intro: "Placeholder. Selling to regulated industries through cloud marketplaces requires additional compliance posture beyond standard certification. This topic covers hyperscaler-specific requirements for FSI, healthcare, and government.",
+    intro:
+      "Placeholder. Selling to regulated industries through cloud marketplaces requires additional compliance posture beyond standard certification. This topic covers hyperscaler-specific requirements for FSI, healthcare, and government.",
     hyperscalers: [
       {
         tagId: "gcp",
@@ -754,7 +790,8 @@ const topics = [
         body: "Placeholder content on GCP's regulated industry marketplace listing requirements, FedRAMP authorization paths, and HIPAA compliance certification.",
       },
     ],
-    implications: "Placeholder: Compliance roadmap for ISVs targeting regulated industry segments via GCP Marketplace.",
+    implications:
+      "Placeholder: Compliance roadmap for ISVs targeting regulated industry segments via GCP Marketplace.",
   },
 
   // ── AUGUST 2025 ─────────────────────────────────────────────────────────────
@@ -762,9 +799,11 @@ const topics = [
   {
     id: "channel-partner-trends-aug-2025",
     title: "Channel Partner Dynamics: Mid-2025 Update",
-    subtitle: "How resellers are adapting to marketplace-native deal structures",
+    subtitle:
+      "How resellers are adapting to marketplace-native deal structures",
     tags: ["aws", "gcp"],
-    intro: "Placeholder. Channel partner behavior on cloud marketplaces shifted notably through H1 2025. CPPO and MCPO adoption accelerated, and reseller margins came under scrutiny.",
+    intro:
+      "Placeholder. Channel partner behavior on cloud marketplaces shifted notably through H1 2025. CPPO and MCPO adoption accelerated, and reseller margins came under scrutiny.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -777,15 +816,18 @@ const topics = [
         body: "Placeholder content on GCP MCPO channel partner adoption and the 100% commit drawdown impact on partner deal positioning.",
       },
     ],
-    implications: "Placeholder: Reseller enablement priorities for ISVs managing channel programs on AWS and GCP.",
+    implications:
+      "Placeholder: Reseller enablement priorities for ISVs managing channel programs on AWS and GCP.",
   },
 
   {
     id: "snowflake-expansion-mid-2025",
     title: "Snowflake Marketplace: Mid-Year Expansion Update",
-    subtitle: "New Native App capabilities and what they mean for cross-listed ISVs",
+    subtitle:
+      "New Native App capabilities and what they mean for cross-listed ISVs",
     tags: ["snowflake", "aws"],
-    intro: "Placeholder. Snowflake continued to expand its Native App Framework capabilities through H1 2025. For ISVs cross-listed on AWS and Snowflake, the distribution opportunity is growing.",
+    intro:
+      "Placeholder. Snowflake continued to expand its Native App Framework capabilities through H1 2025. For ISVs cross-listed on AWS and Snowflake, the distribution opportunity is growing.",
     hyperscalers: [
       {
         tagId: "snowflake",
@@ -798,7 +840,8 @@ const topics = [
         body: "Placeholder content on the combined AWS Marketplace and Snowflake Marketplace cross-listing opportunity for data-adjacent ISVs.",
       },
     ],
-    implications: "Placeholder: Strategic update for ISVs evaluating or managing Snowflake + AWS dual listings.",
+    implications:
+      "Placeholder: Strategic update for ISVs evaluating or managing Snowflake + AWS dual listings.",
   },
 
   // ── JULY 2025 ───────────────────────────────────────────────────────────────
@@ -806,9 +849,11 @@ const topics = [
   {
     id: "commit-spend-midyear-2025",
     title: "Mid-Year Commit Spend: EDP, MACC, and GCP — Status Check",
-    subtitle: "Which programs are growing, which are stalling, and what ISVs should do",
+    subtitle:
+      "Which programs are growing, which are stalling, and what ISVs should do",
     tags: ["aws", "azure", "gcp", "pricing"],
-    intro: "Placeholder. A mid-year snapshot of committed spend program dynamics across AWS EDP, Azure MACC, and GCP commit drawdown — covering eligibility, volume trends, and ISV positioning.",
+    intro:
+      "Placeholder. A mid-year snapshot of committed spend program dynamics across AWS EDP, Azure MACC, and GCP commit drawdown — covering eligibility, volume trends, and ISV positioning.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -826,15 +871,18 @@ const topics = [
         body: "Placeholder content on GCP commit drawdown program updates, MCPO eligibility expansion, and channel offer dynamics.",
       },
     ],
-    implications: "Placeholder: H2 positioning advice for ISVs across all three committed spend programs.",
+    implications:
+      "Placeholder: H2 positioning advice for ISVs across all three committed spend programs.",
   },
 
   {
     id: "macc-edp-comparison-2025",
     title: "MACC vs. EDP: A Deal Desk Comparison",
-    subtitle: "Side-by-side mechanics for the two largest committed spend programs",
+    subtitle:
+      "Side-by-side mechanics for the two largest committed spend programs",
     tags: ["pricing", "azure", "aws"],
-    intro: "Placeholder. Azure MACC and AWS EDP are structurally different programs with different implications for ISV deal structuring. This topic breaks down the key mechanics side by side.",
+    intro:
+      "Placeholder. Azure MACC and AWS EDP are structurally different programs with different implications for ISV deal structuring. This topic breaks down the key mechanics side by side.",
     hyperscalers: [
       {
         tagId: "azure",
@@ -847,7 +895,8 @@ const topics = [
         body: "Placeholder content on EDP program mechanics, tier structure, and how marketplace spend counts toward commitment drawdown.",
       },
     ],
-    implications: "Placeholder: Deal desk guidance for ISVs selling into accounts with both MACC and EDP commitments.",
+    implications:
+      "Placeholder: Deal desk guidance for ISVs selling into accounts with both MACC and EDP commitments.",
   },
 
   // ── JUNE 2025 (hidden — beyond 6-month limit) ───────────────────────────────
@@ -857,7 +906,8 @@ const topics = [
     title: "Agent Frameworks: Early ISV Signals",
     subtitle: "What the first wave of agent-based marketplace listings reveals",
     tags: ["aws", "gcp"],
-    intro: "Placeholder. The first cohort of agent-framework-native marketplace listings went live through Q2 2025. Early data on listing conversion, buyer behavior, and co-sell engagement.",
+    intro:
+      "Placeholder. The first cohort of agent-framework-native marketplace listings went live through Q2 2025. Early data on listing conversion, buyer behavior, and co-sell engagement.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -870,15 +920,18 @@ const topics = [
         body: "Placeholder content on early Agent Development Kit ISV listings and GCP Agent Marketplace pipeline signals.",
       },
     ],
-    implications: "Placeholder: What early agent marketplace data tells ISVs about where to invest listing resources.",
+    implications:
+      "Placeholder: What early agent marketplace data tells ISVs about where to invest listing resources.",
   },
 
   {
     id: "adk-versus-bedrock-agents-2025",
     title: "ADK vs. Bedrock Agents: A Technical Comparison for ISVs",
-    subtitle: "Choosing between Google's Agent Development Kit and AWS's multi-agent framework",
+    subtitle:
+      "Choosing between Google's Agent Development Kit and AWS's multi-agent framework",
     tags: ["aws", "gcp"],
-    intro: "Placeholder. For ISVs building agent-based products, the technical choice between Google's ADK and AWS Bedrock multi-agent framework has significant long-term implications for listing strategy.",
+    intro:
+      "Placeholder. For ISVs building agent-based products, the technical choice between Google's ADK and AWS Bedrock multi-agent framework has significant long-term implications for listing strategy.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -891,7 +944,8 @@ const topics = [
         body: "Placeholder content on Google Agent Development Kit architecture, capabilities, and GCP Marketplace integration path.",
       },
     ],
-    implications: "Placeholder: Technical decision framework for ISVs choosing between ADK and Bedrock agents.",
+    implications:
+      "Placeholder: Technical decision framework for ISVs choosing between ADK and Bedrock agents.",
   },
 
   // ── MAY 2025 (hidden — beyond 6-month limit) ────────────────────────────────
@@ -901,7 +955,8 @@ const topics = [
     title: "Security Baseline for Marketplace Listings: The Full Checklist",
     subtitle: "What ISVs need before listing — and what gets them delisted",
     tags: ["security"],
-    intro: "Placeholder. A comprehensive security and compliance baseline review for ISVs who are listing or renewing listings across cloud marketplaces in 2025.",
+    intro:
+      "Placeholder. A comprehensive security and compliance baseline review for ISVs who are listing or renewing listings across cloud marketplaces in 2025.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -919,15 +974,18 @@ const topics = [
         body: "Placeholder content on GCP Marketplace security requirements and Google Cloud Ready prerequisites.",
       },
     ],
-    implications: "Placeholder: Security compliance action list for ISVs managing listings across multiple hyperscalers.",
+    implications:
+      "Placeholder: Security compliance action list for ISVs managing listings across multiple hyperscalers.",
   },
 
   {
     id: "gcp-assured-workloads-2025",
     title: "GCP Assured Workloads: ISV Listing Implications",
-    subtitle: "How GCP's compliance framework affects ISVs targeting regulated-industry buyers",
+    subtitle:
+      "How GCP's compliance framework affects ISVs targeting regulated-industry buyers",
     tags: ["security", "gcp"],
-    intro: "Placeholder. GCP Assured Workloads expanded its scope in 2025, adding new compliance boundaries that affect which ISV products can be sold to regulated industry customers through GCP Marketplace.",
+    intro:
+      "Placeholder. GCP Assured Workloads expanded its scope in 2025, adding new compliance boundaries that affect which ISV products can be sold to regulated industry customers through GCP Marketplace.",
     hyperscalers: [
       {
         tagId: "gcp",
@@ -935,7 +993,8 @@ const topics = [
         body: "Placeholder content on GCP Assured Workloads scope changes in 2025 and ISV compliance implications for regulated-industry listings.",
       },
     ],
-    implications: "Placeholder: Compliance path for ISVs targeting GCP regulated-industry buyer segments.",
+    implications:
+      "Placeholder: Compliance path for ISVs targeting GCP regulated-industry buyer segments.",
   },
 
   // ── DECEMBER 2024 ───────────────────────────────────────────────────────────
@@ -945,7 +1004,8 @@ const topics = [
     title: "2024 Cloud Marketplace Year in Review",
     subtitle: "How the market matured — and what set the stage for 2025",
     tags: ["aws", "azure", "gcp"],
-    intro: "Placeholder. 2024 year-in-review covering the key shifts in cloud marketplace dynamics, committed spend program expansion, and ISV listing growth across all three hyperscalers.",
+    intro:
+      "Placeholder. 2024 year-in-review covering the key shifts in cloud marketplace dynamics, committed spend program expansion, and ISV listing growth across all three hyperscalers.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -963,15 +1023,18 @@ const topics = [
         body: "Placeholder content on GCP Marketplace ISV roster growth, commit drawdown expansion, and partner program evolution through 2024.",
       },
     ],
-    implications: "Placeholder: 2025 strategic priorities for ISVs based on 2024 marketplace trends.",
+    implications:
+      "Placeholder: 2025 strategic priorities for ISVs based on 2024 marketplace trends.",
   },
 
   {
     id: "pricing-evolution-2024",
     title: "How Marketplace Pricing Evolved in 2024",
-    subtitle: "From flat-rate SaaS to metered, hybrid, and commitment-based models",
+    subtitle:
+      "From flat-rate SaaS to metered, hybrid, and commitment-based models",
     tags: ["pricing", "aws", "azure"],
-    intro: "Placeholder. A retrospective on 2024 pricing model trends across cloud marketplaces, covering the shift from simple SaaS subscriptions toward more flexible, consumption-based structures.",
+    intro:
+      "Placeholder. A retrospective on 2024 pricing model trends across cloud marketplaces, covering the shift from simple SaaS subscriptions toward more flexible, consumption-based structures.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -984,7 +1047,8 @@ const topics = [
         body: "Placeholder content on Azure Marketplace pricing structure evolution and custom meter adoption through 2024.",
       },
     ],
-    implications: "Placeholder: Pricing model modernization guide for ISVs based on 2024 marketplace trends.",
+    implications:
+      "Placeholder: Pricing model modernization guide for ISVs based on 2024 marketplace trends.",
   },
 
   // ── SEPTEMBER 2024 ──────────────────────────────────────────────────────────
@@ -992,9 +1056,11 @@ const topics = [
   {
     id: "cloud-next-2024-recap",
     title: "Google Cloud Next 2024: What ISVs Missed",
-    subtitle: "The marketplace and partner announcements that deserved more attention",
+    subtitle:
+      "The marketplace and partner announcements that deserved more attention",
     tags: ["gcp"],
-    intro: "Placeholder. Google Cloud Next 2024 recap focused on announcements with direct implications for marketplace ISVs and channel partners — the ones that got buried under the AI headlines.",
+    intro:
+      "Placeholder. Google Cloud Next 2024 recap focused on announcements with direct implications for marketplace ISVs and channel partners — the ones that got buried under the AI headlines.",
     hyperscalers: [
       {
         tagId: "gcp",
@@ -1008,9 +1074,11 @@ const topics = [
   {
     id: "snowflake-summit-2024",
     title: "Snowflake Summit 2024: The Marketplace Angle",
-    subtitle: "Native App momentum, Cortex AI, and ISV cross-listing opportunities",
+    subtitle:
+      "Native App momentum, Cortex AI, and ISV cross-listing opportunities",
     tags: ["snowflake", "gcp"],
-    intro: "Placeholder. Snowflake Summit 2024 introduced Cortex AI and significant Native App Framework updates. For ISVs cross-listed on GCP and Snowflake, the partnership implications were significant.",
+    intro:
+      "Placeholder. Snowflake Summit 2024 introduced Cortex AI and significant Native App Framework updates. For ISVs cross-listed on GCP and Snowflake, the partnership implications were significant.",
     hyperscalers: [
       {
         tagId: "snowflake",
@@ -1023,7 +1091,8 @@ const topics = [
         body: "Placeholder content on Snowflake and Google Cloud's deepened partnership and implications for dual-listed ISVs.",
       },
     ],
-    implications: "Placeholder: Strategic update for ISVs cross-listed on Snowflake and GCP Marketplace.",
+    implications:
+      "Placeholder: Strategic update for ISVs cross-listed on Snowflake and GCP Marketplace.",
   },
 
   // ── MARCH 2024 ──────────────────────────────────────────────────────────────
@@ -1031,9 +1100,11 @@ const topics = [
   {
     id: "security-baseline-2024",
     title: "Q1 2024: Security Requirements Tightened Across All Three Clouds",
-    subtitle: "The policy changes that went into effect — and who was caught off guard",
+    subtitle:
+      "The policy changes that went into effect — and who was caught off guard",
     tags: ["security", "aws", "azure", "gcp"],
-    intro: "Placeholder. Q1 2024 brought significant updates to security listing requirements across all three major cloud marketplaces. This topic covers what changed and what ISVs needed to action.",
+    intro:
+      "Placeholder. Q1 2024 brought significant updates to security listing requirements across all three major cloud marketplaces. This topic covers what changed and what ISVs needed to action.",
     hyperscalers: [
       {
         tagId: "aws",
@@ -1051,15 +1122,18 @@ const topics = [
         body: "Placeholder content on GCP Marketplace security requirement changes in Q1 2024.",
       },
     ],
-    implications: "Placeholder: Security compliance retrospective and ongoing readiness checklist.",
+    implications:
+      "Placeholder: Security compliance retrospective and ongoing readiness checklist.",
   },
 
   {
     id: "compliance-shifts-2024",
     title: "Azure's 2024 Privacy and Data Handling Updates",
-    subtitle: "What Microsoft's publisher policy changes mean for Azure Marketplace ISVs",
+    subtitle:
+      "What Microsoft's publisher policy changes mean for Azure Marketplace ISVs",
     tags: ["security", "azure"],
-    intro: "Placeholder. Microsoft updated its privacy and data handling requirements for Azure Marketplace publishers in 2024. This topic covers what changed and how ISVs should structure their compliance response.",
+    intro:
+      "Placeholder. Microsoft updated its privacy and data handling requirements for Azure Marketplace publishers in 2024. This topic covers what changed and how ISVs should structure their compliance response.",
     hyperscalers: [
       {
         tagId: "azure",
@@ -1067,7 +1141,8 @@ const topics = [
         body: "Placeholder content on Microsoft's 2024 publisher privacy and data handling policy updates for Azure Marketplace.",
       },
     ],
-    implications: "Placeholder: Data handling compliance action items for Azure Marketplace ISVs.",
+    implications:
+      "Placeholder: Data handling compliance action items for Azure Marketplace ISVs.",
   },
 
   // ── END PLACEHOLDER CONTENT ─────────────────────────────────────────────────
