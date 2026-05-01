@@ -26,13 +26,13 @@ function renderLayout() {
   const sortedYears = Object.keys(yearMap).sort(
     (a, b) => Number(b) - Number(a),
   );
-  const VISIBLE_YEARS = 2;
+  const currentYear = new Date().getFullYear().toString();
   const VISIBLE_MONTHS = 6;
 
   const sidebarGroups = sortedYears
-    .map((year, yi) => {
+    .map((year) => {
       const nls = yearMap[year];
-      const isYearCollapsed = yi >= VISIBLE_YEARS;
+      const isYearCollapsed = year !== currentYear;
       const monthItems = nls
         .map((nl, ni) => {
           const isActive = nl.id === first.id;
@@ -77,7 +77,11 @@ function renderLayout() {
     <header class="masthead">
       <div class="masthead-brand">
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Open navigation">
-          <span></span><span></span><span></span>
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
+            <rect width="20" height="2" rx="1" fill="white"/>
+            <rect y="6" width="20" height="2" rx="1" fill="white"/>
+            <rect y="12" width="20" height="2" rx="1" fill="white"/>
+          </svg>
         </button>
         <span class="masthead-dot"></span>
         <span class="masthead-wordmark">Suger Cube</span>
@@ -87,11 +91,11 @@ function renderLayout() {
     </header>
     ${renderFilterBar()}
     <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-label">Newsletters</div>
+      ${sidebarGroups}
+    </aside>
     <div class="layout">
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-label">Newsletters</div>
-        ${sidebarGroups}
-      </aside>
       <main class="main" id="main-content">
         ${renderNewsletterContent(first)}
       </main>
