@@ -12,22 +12,30 @@ function renderLayout() {
     <div class="layout">
       <aside class="sidebar">
         <div class="sidebar-label">Newsletters</div>
-        ${newsletters.map((nl, i) => {
-          const isActive = i === 0;
-          const nlTopics = nl.topicIds.map(id => topicMap[id]).filter(Boolean);
-          return `
-          <button class="sidebar-item${isActive ? ' active' : ''}" data-id="${nl.id}" onclick="selectNewsletter('${nl.id}')">
+        ${newsletters
+          .map((nl, i) => {
+            const isActive = i === 0;
+            const nlTopics = nl.topicIds
+              .map((id) => topicMap[id])
+              .filter(Boolean);
+            return `
+          <button class="sidebar-item${isActive ? " active" : ""}" data-id="${nl.id}" onclick="selectNewsletter('${nl.id}')">
             <div class="sidebar-date">${nl.date}</div>
             <div class="sidebar-title">${nl.title}</div>
           </button>
-          <div class="sidebar-topics${isActive ? ' visible' : ''}" data-nl="${nl.id}">
-            ${nlTopics.map((t, ti) => `
+          <div class="sidebar-topics${isActive ? " visible" : ""}" data-nl="${nl.id}">
+            ${nlTopics
+              .map(
+                (t, ti) => `
               <button class="sidebar-topic-item" onclick="navigateToTopic('${nl.id}','${t.id}')">
-                <span class="sidebar-topic-num">${String(ti + 1).padStart(2, '0')}</span>
+                <span class="sidebar-topic-num">${String(ti + 1).padStart(2, "0")}</span>
                 <span class="sidebar-topic-label">${t.title}</span>
-              </button>`).join('')}
+              </button>`,
+              )
+              .join("")}
           </div>`;
-        }).join('')}
+          })
+          .join("")}
       </aside>
       <main class="main" id="main-content">
         ${renderNewsletterContent(first)}
