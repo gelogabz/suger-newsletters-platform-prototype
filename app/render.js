@@ -1,7 +1,9 @@
 function renderFilterBar() {
   const pills = Object.entries(tagMeta)
     .map(([id, m]) => {
-      const count = newsletters.filter((nl) => newsletterTags[nl.id]?.has(id)).length;
+      const count = newsletters.filter((nl) =>
+        newsletterTags[nl.id]?.has(id),
+      ).length;
       return `<button class="filter-pill" data-tag="${id}"
       style="--pill-bg:${m.badgeBg};--pill-text:${m.badgeText};--pill-border:${m.border}"
       onclick="toggleFilter('${id}')">${m.label}<span class="pill-count">${count}</span></button>`;
@@ -40,10 +42,12 @@ function renderLayout() {
           const nlTopics = nl.topicIds
             .map((id) => topicMap[id])
             .filter(Boolean);
-          const nlTagDots = [...(newsletterTags[nl.id] || [])].map((tagId) => {
-            const m = tagMeta[tagId] || {};
-            return `<span class="sidebar-tag-dot" style="background:${m.border || "#444"}" title="${m.label || tagId}"></span>`;
-          }).join("");
+          const nlTagDots = [...(newsletterTags[nl.id] || [])]
+            .map((tagId) => {
+              const m = tagMeta[tagId] || {};
+              return `<span class="sidebar-tag-dot" style="background:${m.border || "#444"}" title="${m.label || tagId}"></span>`;
+            })
+            .join("");
           return `
         <button class="sidebar-item${isActive ? " active" : ""}${isExtra ? " sidebar-month-extra" : ""}" data-id="${nl.id}" onclick="selectNewsletter('${nl.id}')">
           <div class="sidebar-date">${nl.date}</div>
