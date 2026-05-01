@@ -1037,7 +1037,7 @@ body.dark-mode .nl-title {
 }
 
 body.dark-mode .nl-description {
-    color: #777;
+    color: #aaa;
 }
 
 body.dark-mode .topic-title {
@@ -1045,11 +1045,11 @@ body.dark-mode .topic-title {
 }
 
 body.dark-mode .topic-subtitle {
-    color: #666;
+    color: #888;
 }
 
 body.dark-mode .topic-intro {
-    color: #777;
+    color: #aaa;
     border-bottom-color: #222;
 }
 
@@ -1058,7 +1058,7 @@ body.dark-mode .hs-headline {
 }
 
 body.dark-mode .hs-body {
-    color: #777;
+    color: #aaa;
 }
 
 body.dark-mode .hs-section {
@@ -1068,7 +1068,7 @@ body.dark-mode .hs-section {
 body.dark-mode .nl-nav-item {
     background: #161616;
     border-color: #222;
-    color: #888;
+    color: #aaa;
 }
 
 body.dark-mode .nl-nav-item:hover {
@@ -1077,7 +1077,7 @@ body.dark-mode .nl-nav-item:hover {
 }
 
 body.dark-mode .nl-nav-num {
-    color: #555;
+    color: #888;
 }
 
 body.dark-mode .nl-divider {
@@ -1098,16 +1098,16 @@ body.dark-mode .site-footer {
 }
 
 body.dark-mode .footer-col-title {
-    color: #444;
+    color: #888;
 }
 
 body.dark-mode .footer-links a {
-    color: #555;
+    color: #888;
 }
 
 body.dark-mode .footer-bottom {
     border-top-color: #222;
-    color: #444;
+    color: #888;
 }
 
 body.dark-mode mark.search-highlight {
