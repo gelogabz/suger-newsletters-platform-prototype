@@ -1,3 +1,18 @@
+/*
+  Template — add a new tag:
+
+  tagId: {
+    label: "Display Name",   // shown in filter pills and badges
+    border: "#HEX",          // pill border + tag dot color in sidebar
+    bg: "#HEX",              // card background tint (currently unused)
+    badgeBg: "#HEX",         // badge / filter pill background
+    badgeText: "#HEX",       // badge / filter pill text
+  },
+
+  Adding an entry here automatically creates a filter pill in the UI.
+  tagId must match the values used in topics.js → tags[] and hyperscalers[].tagId.
+*/
+
 const tagMeta = {
   aws: {
     label: "AWS",

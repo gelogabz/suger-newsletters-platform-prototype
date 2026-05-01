@@ -1,3 +1,20 @@
+/*
+  Template — add a new newsletter issue:
+
+  {
+    id: "nl-000",               // unique slug, used in URLs and sidebar
+    title: "Newsletter Title",
+    date: "Month YYYY",         // e.g. "June 2026" — drives sidebar grouping by year
+    description: "One-sentence summary shown under the title.",
+    topicIds: [                 // references ids in topics.js, rendered in order
+      "topic-slug-1",
+      "topic-slug-2",
+    ],
+  },
+
+  Newest issue goes first. Tags are derived automatically from the linked topics.
+*/
+
 const newsletters = [
   {
     id: "nl-001",

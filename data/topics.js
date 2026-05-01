@@ -1,3 +1,28 @@
+/*
+  Template — add a new topic:
+
+  {
+    id: "topic-slug",           // unique slug, must match topicIds in newsletters.js
+    title: "Topic Title",
+    subtitle: "One-line frame of the topic",
+    tags: ["aws", "azure", "gcp"],  // controls filter matching and tag pills; use ids from tags.js
+    intro: "2–3 sentence setup explaining why this topic matters right now.",
+    hyperscalers: [
+      {
+        tagId: "aws",           // must match a key in tags.js
+        headline: "Card headline",
+        body: "3–4 sentences. Specific and factual — cite the product, event, or announcement.",
+        source: {               // optional
+          label: "Link label",
+          url: "https://...",
+        },
+      },
+      // repeat for azure, gcp, snowflake, etc.
+    ],
+    implications: "2–4 sentences. Practical so-what for sales reps and enterprise buyers.",
+  },
+*/
+
 const topics = [
   // ── MAY 2026 ────────────────────────────────────────────────────────────────
 
