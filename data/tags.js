@@ -27,4 +27,18 @@ const tagMeta = {
     badgeBg: "#BAE6FD",
     badgeText: "#0369A1",
   },
+  pricing: {
+    label: "Pricing",
+    border: "#10B981",
+    bg: "#F0FDF4",
+    badgeBg: "#D1FAE5",
+    badgeText: "#065F46",
+  },
+  security: {
+    label: "Security",
+    border: "#8B5CF6",
+    bg: "#F5F3FF",
+    badgeBg: "#EDE9FE",
+    badgeText: "#5B21B6",
+  },
 };
