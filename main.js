@@ -2,6 +2,8 @@ const topicMap = {};
 const newsletterTags = {};
 const activeFilters = new Set();
 let activeNewsletterId;
+let currentSearch = "";
+let searchTimeout = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   topics.forEach((t) => (topicMap[t.id] = t));
@@ -16,6 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
   activeNewsletterId = newsletters[0].id;
   document.getElementById("app").innerHTML = renderLayout();
   initScrollListener();
+  initDarkMode();
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".export-wrap")) closeExportMenu();
+  });
 });
 
 function ensureNewsletterVisible(id) {
@@ -48,6 +54,10 @@ function selectNewsletter(id) {
   const main = document.getElementById("main-content");
   main.innerHTML = renderNewsletterContent(nl);
   main.scrollTo({ top: 0, behavior: "smooth" });
+  if (currentSearch) {
+    const terms = currentSearch.split(/\s+/).filter(Boolean);
+    highlightKeywords(main, terms);
+  }
 }
 
 function navigateToTopic(newsletterId, topicId) {
@@ -75,6 +85,12 @@ function initScrollListener() {
   main.addEventListener("scroll", () => {
     const btn = document.getElementById("back-to-top");
     if (btn) btn.classList.toggle("visible", main.scrollTop > 300);
+    const bar = document.getElementById("reading-progress");
+    if (bar) {
+      const scrollable = main.scrollHeight - main.clientHeight;
+      const pct = scrollable > 0 ? (main.scrollTop / scrollable) * 100 : 0;
+      bar.style.width = pct + "%";
+    }
   });
 }
 
@@ -170,4 +186,213 @@ function toggleMoreMonths(year) {
   const btn = group.querySelector(".sidebar-show-more");
   if (btn)
     btn.textContent = isExpanded ? "Show less" : `+ ${btn.dataset.extra} more`;
+}
+
+function toggleExportMenu() {
+  document.getElementById("export-menu")?.classList.toggle("open");
+}
+
+function closeExportMenu() {
+  document.getElementById("export-menu")?.classList.remove("open");
+}
+
+function triggerPrint() {
+  closeExportMenu();
+  window.print();
+}
+
+function exportAsHTML() {
+  closeExportMenu();
+  const nl = newsletters.find((n) => n.id === activeNewsletterId);
+  if (!nl) return;
+  const nlTopics = nl.topicIds.map((id) => topicMap[id]).filter(Boolean);
+  const bodyHTML = `
+    <div class="nl-eyebrow">${nl.date}</div>
+    <h1 class="nl-title">${nl.title}</h1>
+    <p class="nl-description">${nl.description}</p>
+    <div class="nl-divider"></div>
+    ${nlTopics.map((t, i) => renderTopic(t, i + 1)).join("")}`;
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${nl.title} — Suger Cube</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@700;800&display=swap" rel="stylesheet">
+  <style>${getExportStyles()}</style>
+</head>
+<body>
+  <div class="content">${bodyHTML}</div>
+</body>
+</html>`;
+  const blob = new Blob([html], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `suger-cube-${nl.id}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function getExportStyles() {
+  return `
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: #f5f5f5; color: #111; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, .nl-title, .topic-title, .hs-headline { font-family: 'Lexend', sans-serif; }
+    .content { max-width: 680px; margin: 0 auto; padding: 48px 32px; }
+    .nl-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #ae530f; margin-bottom: 14px; }
+    .nl-title { font-size: 32px; font-weight: 800; line-height: 1.1; color: #000; letter-spacing: -0.03em; margin-bottom: 14px; }
+    .nl-description { font-size: 15px; color: #666; line-height: 1.75; margin-bottom: 28px; }
+    .nl-divider { height: 1px; background: #ebebeb; margin-bottom: 32px; }
+    .topic { background: #fff; border-radius: 12px; padding: 36px 40px; margin-bottom: 16px; border: 1px solid #ebebeb; }
+    .topic-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .topic-num { font-size: 11px; font-weight: 700; color: #767676; letter-spacing: 0.06em; }
+    .topic-tags { display: flex; gap: 5px; }
+    .tag-pill { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 4px; padding: 2px 7px; }
+    .topic-title { font-size: 22px; font-weight: 800; line-height: 1.2; color: #000; letter-spacing: -0.02em; margin-bottom: 5px; }
+    .topic-subtitle { font-size: 13px; color: #767676; font-style: italic; margin-bottom: 20px; }
+    .topic-intro { font-size: 14px; color: #666; line-height: 1.8; padding-bottom: 24px; border-bottom: 1px solid #ebebeb; margin-bottom: 4px; }
+    .hs-sections { margin-bottom: 24px; }
+    .hs-section { padding: 22px 0; border-bottom: 1px solid #f5f5f5; }
+    .hs-section:last-child { border-bottom: none; }
+    .hs-section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+    .hs-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 4px; padding: 3px 8px; }
+    .hs-headline { font-size: 15px; font-weight: 700; color: #000; line-height: 1.3; letter-spacing: -0.01em; }
+    .hs-body { font-size: 14px; line-height: 1.8; color: #666; }
+    .hs-source { display: inline-block; margin-top: 10px; font-size: 11px; color: #767676; text-decoration: none; }
+    .hs-source::before { content: "↗ "; }
+    .implications { background: rgba(242,106,28,0.08); border: 1px solid rgba(242,106,28,0.2); border-left: 3px solid #f26a1c; border-radius: 0 8px 8px 0; padding: 18px 22px; }
+    .implications-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #ae530f; margin-bottom: 8px; }
+    .implications-body { font-size: 14px; line-height: 1.8; color: #333; }
+  `;
+}
+
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle("dark-mode");
+  localStorage.setItem("dark-mode", isDark ? "1" : "0");
+}
+
+function initDarkMode() {
+  if (localStorage.getItem("dark-mode") === "1") {
+    document.body.classList.add("dark-mode");
+  }
+}
+
+function handleSearch(query) {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    currentSearch = query.trim().toLowerCase();
+    applySearch();
+  }, 250);
+}
+
+function applySearch() {
+  const terms = currentSearch ? currentSearch.split(/\s+/).filter(Boolean) : [];
+
+  if (terms.length === 0) {
+    document.querySelectorAll(".sidebar-item[data-id]").forEach((item) => {
+      item.classList.remove("search-dimmed");
+    });
+    clearHighlights(document.getElementById("main-content"));
+    return;
+  }
+
+  document.querySelectorAll(".sidebar-item[data-id]").forEach((item) => {
+    const nl = newsletters.find((n) => n.id === item.dataset.id);
+    const score = nl ? scoreNewsletter(nl, terms) : 0;
+    item.classList.toggle("search-dimmed", score === 0);
+  });
+
+  const scored = newsletters
+    .map((nl) => ({ nl, score: scoreNewsletter(nl, terms) }))
+    .sort((a, b) => b.score - a.score);
+  const top = scored[0];
+
+  if (top && top.score > 0) {
+    if (top.nl.id !== activeNewsletterId) {
+      selectNewsletter(top.nl.id);
+    } else {
+      highlightKeywords(document.getElementById("main-content"), terms);
+    }
+  }
+}
+
+function scoreNewsletter(nl, terms) {
+  let score = 0;
+  const fields = [
+    { text: nl.title, weight: 10 },
+    { text: nl.description, weight: 5 },
+  ];
+  nl.topicIds.forEach((tid) => {
+    const topic = topicMap[tid];
+    if (!topic) return;
+    fields.push({ text: topic.title, weight: 3 });
+    if (topic.subtitle) fields.push({ text: topic.subtitle, weight: 2 });
+    if (topic.intro) fields.push({ text: topic.intro, weight: 1 });
+  });
+  [...(newsletterTags[nl.id] || [])].forEach((tagId) => {
+    const m = tagMeta[tagId];
+    if (m) fields.push({ text: m.label, weight: 8 });
+  });
+  terms.forEach((term) => {
+    fields.forEach(({ text, weight }) => {
+      if (text && text.toLowerCase().includes(term)) score += weight;
+    });
+  });
+  return score;
+}
+
+function highlightKeywords(container, terms) {
+  if (!container || !terms.length) return;
+  clearHighlights(container);
+  const content = container.querySelector(".content");
+  if (!content) return;
+  const regex = new RegExp(`(${terms.map(escapeRegex).join("|")})`, "gi");
+  const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const tag = node.parentElement?.tagName?.toLowerCase();
+      if (!tag || ["script", "style", "mark"].includes(tag))
+        return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+  const nodes = [];
+  let node;
+  while ((node = walker.nextNode())) nodes.push(node);
+  nodes.forEach((textNode) => {
+    const text = textNode.textContent;
+    if (!regex.test(text)) return;
+    regex.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    let m;
+    while ((m = regex.exec(text)) !== null) {
+      if (m.index > last)
+        frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const mark = document.createElement("mark");
+      mark.className = "search-highlight";
+      mark.textContent = m[0];
+      frag.appendChild(mark);
+      last = regex.lastIndex;
+    }
+    if (last < text.length)
+      frag.appendChild(document.createTextNode(text.slice(last)));
+    textNode.parentNode.replaceChild(frag, textNode);
+  });
+}
+
+function clearHighlights(container) {
+  if (!container) return;
+  container.querySelectorAll("mark.search-highlight").forEach((mark) => {
+    const parent = mark.parentNode;
+    parent.replaceChild(document.createTextNode(mark.textContent), mark);
+    parent.normalize();
+  });
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
