@@ -4,9 +4,9 @@ function renderLayout() {
     <header class="masthead">
       <div class="masthead-brand">
         <span class="masthead-dot"></span>
-        <span class="masthead-wordmark">Cloud Marketplace Intelligence</span>
+        <span class="masthead-wordmark">Suger Rush</span>
         <span class="masthead-sep"></span>
-        <span class="masthead-by">Suger</span>
+        <span class="masthead-by">Marketplace intelligence, refined.</span>
       </div>
     </header>
     <div class="layout">
