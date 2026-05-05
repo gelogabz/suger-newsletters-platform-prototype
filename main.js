@@ -5,6 +5,30 @@ let activeNewsletterId;
 let currentSearch = "";
 let searchTimeout = null;
 
+function parseHash() {
+  const raw = location.hash.slice(1);
+  if (!raw) return { newsletterId: null, topicId: null };
+  const slash = raw.indexOf("/");
+  if (slash === -1) return { newsletterId: raw, topicId: null };
+  return { newsletterId: raw.slice(0, slash), topicId: raw.slice(slash + 1) };
+}
+
+function pushHash(newsletterId, topicId) {
+  const hash = topicId ? `#${newsletterId}/${topicId}` : `#${newsletterId}`;
+  history.pushState(null, "", hash);
+}
+
+function onNavigate() {
+  const { newsletterId, topicId } = parseHash();
+  if (!newsletterId) return;
+  if (newsletterId !== activeNewsletterId) {
+    selectNewsletter(newsletterId, false);
+    if (topicId) setTimeout(() => scrollToTopic(topicId), 80);
+  } else if (topicId) {
+    scrollToTopic(topicId);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   topics.forEach((t) => (topicMap[t.id] = t));
   newsletters.forEach((nl) => {
@@ -15,13 +39,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     newsletterTags[nl.id] = tagSet;
   });
-  activeNewsletterId = newsletters[0].id;
+
+  const { newsletterId, topicId } = parseHash();
+  const validId =
+    newsletterId && newsletters.find((n) => n.id === newsletterId)
+      ? newsletterId
+      : null;
+  activeNewsletterId = validId || newsletters[0].id;
+
   document.getElementById("app").innerHTML = renderLayout();
   initScrollListener();
   initDarkMode();
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".export-wrap")) closeExportMenu();
   });
+
+  if (validId) ensureNewsletterVisible(activeNewsletterId);
+  if (!location.hash) history.replaceState(null, "", `#${activeNewsletterId}`);
+  if (topicId) setTimeout(() => scrollToTopic(topicId), 80);
+
+  window.addEventListener("popstate", onNavigate);
+  window.addEventListener("hashchange", onNavigate);
 });
 
 function ensureNewsletterVisible(id) {
@@ -34,10 +72,11 @@ function ensureNewsletterVisible(id) {
     yearGroup?.classList.add("months-expanded");
 }
 
-function selectNewsletter(id) {
+function selectNewsletter(id, updateHash = true) {
   if (id === activeNewsletterId) return;
   activeNewsletterId = id;
 
+  if (updateHash) pushHash(id, null);
   closeGlossary();
   closeMobileMenu();
   ensureNewsletterVisible(id);
@@ -61,8 +100,9 @@ function selectNewsletter(id) {
 }
 
 function navigateToTopic(newsletterId, topicId) {
+  pushHash(newsletterId, topicId);
   if (newsletterId !== activeNewsletterId) {
-    selectNewsletter(newsletterId);
+    selectNewsletter(newsletterId, false);
     setTimeout(() => scrollToTopic(topicId), 80);
   } else {
     scrollToTopic(topicId);
@@ -102,6 +142,7 @@ function scrollMainToTop() {
 
 function smoothScrollTo(event, id) {
   event.preventDefault();
+  pushHash(activeNewsletterId, id);
   const el = document.getElementById(id);
   const main = document.getElementById("main-content");
   if (!el || !main) return;

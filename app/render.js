@@ -17,7 +17,8 @@ function renderFilterBar() {
 }
 
 function renderLayout() {
-  const first = newsletters[0];
+  const activeNl =
+    newsletters.find((n) => n.id === activeNewsletterId) || newsletters[0];
 
   const yearMap = {};
   newsletters.forEach((nl) => {
@@ -37,7 +38,7 @@ function renderLayout() {
       const isYearCollapsed = year !== currentYear;
       const monthItems = nls
         .map((nl, ni) => {
-          const isActive = nl.id === first.id;
+          const isActive = nl.id === activeNl.id;
           const isExtra = ni >= VISIBLE_MONTHS;
           const nlTopics = nl.topicIds
             .map((id) => topicMap[id])
@@ -130,7 +131,7 @@ function renderLayout() {
     </aside>
     <div class="layout">
       <main class="main" id="main-content">
-        ${renderNewsletterContent(first)}
+        ${renderNewsletterContent(activeNl)}
       </main>
       <aside class="glossary-panel" id="glossary-panel">
         <div class="glossary-panel-header">
