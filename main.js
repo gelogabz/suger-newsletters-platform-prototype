@@ -254,17 +254,65 @@ function triggerPrint() {
   window.print();
 }
 
+function exportRenderHSSection(hs, isLast) {
+  const m = tagMeta[hs.tagId] || {};
+  const sourceHtml = hs.source
+    ? `<a href="${hs.source.url}" style="display:inline-block;margin-top:10px;font-size:11px;color:#767676;text-decoration:none;" target="_blank" rel="noopener noreferrer">↗ ${hs.source.label}</a>`
+    : "";
+  return `
+    <div style="padding:22px 0;${isLast ? "" : "border-bottom:1px solid #f5f5f5;"}">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;">
+        <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;padding:3px 8px;background:${m.badgeBg};color:${m.badgeText};">${m.label || hs.tagId}</span>
+        <h3 style="font-family:'Lexend',sans-serif;font-size:15px;font-weight:700;color:#000;line-height:1.3;letter-spacing:-0.01em;margin:0;">${hs.headline}</h3>
+      </div>
+      <p style="font-size:14px;line-height:1.8;color:#666;margin:0;">${hs.body}</p>
+      ${sourceHtml}
+    </div>`;
+}
+
+function exportRenderTopic(topic, number) {
+  const num = String(number).padStart(2, "0");
+  const tagsHtml = topic.tags
+    .map((tagId) => {
+      const m = tagMeta[tagId] || {};
+      return `<span style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;padding:2px 7px;background:${m.badgeBg};color:${m.badgeText};">${m.label || tagId}</span>`;
+    })
+    .join(" ");
+  const hsSections = topic.hyperscalers
+    .map((hs, i) =>
+      exportRenderHSSection(hs, i === topic.hyperscalers.length - 1),
+    )
+    .join("");
+  return `
+    <div style="background:#fff;border-radius:12px;padding:36px 40px;margin-bottom:16px;border:1px solid #ebebeb;font-family:'Inter',-apple-system,sans-serif;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="font-size:11px;font-weight:700;color:#767676;letter-spacing:0.06em;">${num}</span>
+        <div style="display:flex;gap:5px;">${tagsHtml}</div>
+      </div>
+      <h2 style="font-family:'Lexend',sans-serif;font-size:22px;font-weight:800;line-height:1.2;color:#000;letter-spacing:-0.02em;margin:0 0 5px;">${topic.title}</h2>
+      <p style="font-size:13px;color:#767676;font-style:italic;margin:0 0 20px;">${topic.subtitle}</p>
+      <p style="font-size:14px;color:#666;line-height:1.8;padding-bottom:24px;border-bottom:1px solid #ebebeb;margin:0 0 4px;">${topic.intro}</p>
+      <div style="margin-bottom:24px;">${hsSections}</div>
+      <div style="background:rgba(242,106,28,0.08);border:1px solid rgba(242,106,28,0.2);border-left:3px solid #f26a1c;border-radius:0 8px 8px 0;padding:18px 22px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#ae530f;margin-bottom:8px;">What this means for you</div>
+        <p style="font-size:14px;line-height:1.8;color:#333;margin:0;">${topic.implications}</p>
+      </div>
+    </div>`;
+}
+
 function exportAsHTML() {
   closeExportMenu();
   const nl = newsletters.find((n) => n.id === activeNewsletterId);
   if (!nl) return;
   const nlTopics = nl.topicIds.map((id) => topicMap[id]).filter(Boolean);
   const bodyHTML = `
-    <div class="nl-eyebrow">${nl.date}</div>
-    <h1 class="nl-title">${nl.title}</h1>
-    <p class="nl-description">${nl.description}</p>
-    <div class="nl-divider"></div>
-    ${nlTopics.map((t, i) => renderTopic(t, i + 1)).join("")}`;
+    <div style="width:100%;box-sizing:border-box;padding:48px 32px;font-family:'Inter',-apple-system,sans-serif;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#ae530f;margin-bottom:14px;">${nl.date}</div>
+      <h1 style="font-family:'Lexend',sans-serif;font-size:32px;font-weight:800;line-height:1.1;color:#000;letter-spacing:-0.03em;margin:0 0 14px;">${nl.title}</h1>
+      <p style="font-size:15px;color:#666;line-height:1.75;margin:0 0 28px;">${nl.description}</p>
+      <hr style="height:1px;background:#ebebeb;border:none;margin-bottom:32px;">
+      ${nlTopics.map((t, i) => exportRenderTopic(t, i + 1)).join("")}
+    </div>`;
   const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -273,10 +321,9 @@ function exportAsHTML() {
   <title>${nl.title} — Suger Cube</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@700;800&display=swap" rel="stylesheet">
-  <style>${getExportStyles()}</style>
 </head>
-<body>
-  <div class="content">${bodyHTML}</div>
+<body style="font-family:'Inter',-apple-system,sans-serif;background:#f5f5f5;color:#111;line-height:1.6;margin:0;padding:0;">
+  ${bodyHTML}
 </body>
 </html>`;
   const blob = new Blob([html], { type: "text/html" });
@@ -288,39 +335,6 @@ function exportAsHTML() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-}
-
-function getExportStyles() {
-  return `
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', -apple-system, sans-serif; background: #f5f5f5; color: #111; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    h1, h2, h3, .nl-title, .topic-title, .hs-headline { font-family: 'Lexend', sans-serif; }
-    .content { max-width: 680px; margin: 0 auto; padding: 48px 32px; }
-    .nl-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #ae530f; margin-bottom: 14px; }
-    .nl-title { font-size: 32px; font-weight: 800; line-height: 1.1; color: #000; letter-spacing: -0.03em; margin-bottom: 14px; }
-    .nl-description { font-size: 15px; color: #666; line-height: 1.75; margin-bottom: 28px; }
-    .nl-divider { height: 1px; background: #ebebeb; margin-bottom: 32px; }
-    .topic { background: #fff; border-radius: 12px; padding: 36px 40px; margin-bottom: 16px; border: 1px solid #ebebeb; }
-    .topic-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-    .topic-num { font-size: 11px; font-weight: 700; color: #767676; letter-spacing: 0.06em; }
-    .topic-tags { display: flex; gap: 5px; }
-    .tag-pill { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 4px; padding: 2px 7px; }
-    .topic-title { font-size: 22px; font-weight: 800; line-height: 1.2; color: #000; letter-spacing: -0.02em; margin-bottom: 5px; }
-    .topic-subtitle { font-size: 13px; color: #767676; font-style: italic; margin-bottom: 20px; }
-    .topic-intro { font-size: 14px; color: #666; line-height: 1.8; padding-bottom: 24px; border-bottom: 1px solid #ebebeb; margin-bottom: 4px; }
-    .hs-sections { margin-bottom: 24px; }
-    .hs-section { padding: 22px 0; border-bottom: 1px solid #f5f5f5; }
-    .hs-section:last-child { border-bottom: none; }
-    .hs-section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
-    .hs-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 4px; padding: 3px 8px; }
-    .hs-headline { font-size: 15px; font-weight: 700; color: #000; line-height: 1.3; letter-spacing: -0.01em; }
-    .hs-body { font-size: 14px; line-height: 1.8; color: #666; }
-    .hs-source { display: inline-block; margin-top: 10px; font-size: 11px; color: #767676; text-decoration: none; }
-    .hs-source::before { content: "↗ "; }
-    .implications { background: rgba(242,106,28,0.08); border: 1px solid rgba(242,106,28,0.2); border-left: 3px solid #f26a1c; border-radius: 0 8px 8px 0; padding: 18px 22px; }
-    .implications-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #ae530f; margin-bottom: 8px; }
-    .implications-body { font-size: 14px; line-height: 1.8; color: #333; }
-  `;
 }
 
 function toggleDarkMode() {
