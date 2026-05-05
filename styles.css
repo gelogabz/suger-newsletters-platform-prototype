@@ -1056,24 +1056,36 @@ body.dark-mode .icon-moon {
     opacity: 0.15;
 }
 
-/* ── Reading progress ── */
+/* ── Scroll logo indicator ── */
 
-.reading-progress-wrap {
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: transparent;
-    z-index: 10;
-    margin-bottom: -2px;
+.scroll-logo {
+    position: fixed;
+    top: calc(var(--masthead-h) + var(--filterbar-h) + 14px);
+    right: 28px;
+    width: 32px;
+    height: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 190;
 }
 
-.reading-progress {
-    height: 2px;
-    background: var(--orange);
-    width: 0%;
-    transition: width 0.1s linear;
+.scroll-logo.visible {
+    opacity: 1;
+}
+
+.scroll-logo-ghost {
+    position: absolute;
+    inset: 0;
+    color: var(--gray-200);
+    opacity: 0.6;
+}
+
+.scroll-logo-fill {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.1s linear;
 }
 
 /* ── Search highlight ── */
@@ -1205,6 +1217,10 @@ body.dark-mode mark.search-highlight {
     color: #fff;
 }
 
+body.dark-mode .scroll-logo-ghost {
+    color: #444;
+}
+
 /* ── Responsive ── */
 
 @media (max-width: 768px) {
@@ -1285,7 +1301,7 @@ body.dark-mode mark.search-highlight {
     .back-to-top,
     .glossary-panel,
     .mobile-overlay,
-    .reading-progress-wrap,
+    .scroll-logo,
     .site-footer,
     .nl-nav {
         display: none !important;

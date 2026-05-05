@@ -4,6 +4,17 @@ const activeFilters = new Set();
 let activeNewsletterId;
 let currentSearch = "";
 let searchTimeout = null;
+let isNavigating = false;
+let navigatingTimer = null;
+let urlUpdateTimer = null;
+
+function setNavigating() {
+  isNavigating = true;
+  clearTimeout(navigatingTimer);
+  navigatingTimer = setTimeout(() => {
+    isNavigating = false;
+  }, 700);
+}
 
 function parseHash() {
   const raw = location.hash.slice(1);
@@ -106,6 +117,7 @@ function selectNewsletter(id, updateHash = true) {
 
 function navigateToTopic(newsletterId, topicId) {
   pushHash(newsletterId, topicId);
+  setNavigating();
   if (newsletterId !== activeNewsletterId) {
     selectNewsletter(newsletterId, false);
     setTimeout(() => scrollToTopic(topicId), 80);
@@ -119,6 +131,7 @@ function scrollToTopic(topicId) {
   const el = document.getElementById(topicId);
   const main = document.getElementById("main-content");
   if (!el || !main) return;
+  setNavigating();
   const offset =
     el.getBoundingClientRect().top - main.getBoundingClientRect().top;
   main.scrollBy({ top: offset - 24, behavior: "smooth" });
@@ -130,19 +143,25 @@ function initScrollListener() {
   main.addEventListener("scroll", () => {
     const btn = document.getElementById("back-to-top");
     if (btn) btn.classList.toggle("visible", main.scrollTop > 300);
-    const bar = document.getElementById("reading-progress");
-    if (bar) {
+    const logo = document.getElementById("scroll-logo");
+    const logoFill = document.getElementById("scroll-logo-fill");
+    if (logo && logoFill) {
       const scrollable = main.scrollHeight - main.clientHeight;
       const pct = scrollable > 0 ? (main.scrollTop / scrollable) * 100 : 0;
-      bar.style.width = pct + "%";
+      logo.classList.toggle("visible", main.scrollTop > 20);
+      logoFill.style.clipPath = `inset(${100 - pct}% 0 0 0)`;
     }
-    const mainTop = main.getBoundingClientRect().top;
-    let activeTopicId = null;
-    main.querySelectorAll("article.topic[id]").forEach((article) => {
-      if (article.getBoundingClientRect().top - mainTop <= 80)
-        activeTopicId = article.id;
-    });
-    replaceHash(activeNewsletterId, activeTopicId);
+    if (isNavigating) return;
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(() => {
+      const mainTop = main.getBoundingClientRect().top;
+      let activeTopicId = null;
+      main.querySelectorAll("article.topic[id]").forEach((article) => {
+        if (article.getBoundingClientRect().top - mainTop <= 80)
+          activeTopicId = article.id;
+      });
+      replaceHash(activeNewsletterId, activeTopicId);
+    }, 120);
   });
 }
 
@@ -155,6 +174,7 @@ function scrollMainToTop() {
 function smoothScrollTo(event, id) {
   event.preventDefault();
   pushHash(activeNewsletterId, id);
+  setNavigating();
   const el = document.getElementById(id);
   const main = document.getElementById("main-content");
   if (!el || !main) return;
