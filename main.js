@@ -18,6 +18,11 @@ function pushHash(newsletterId, topicId) {
   history.pushState(null, "", hash);
 }
 
+function replaceHash(newsletterId, topicId) {
+  const hash = topicId ? `#${newsletterId}/${topicId}` : `#${newsletterId}`;
+  history.replaceState(null, "", hash);
+}
+
 function onNavigate() {
   const { newsletterId, topicId } = parseHash();
   if (!newsletterId) return;
@@ -131,6 +136,13 @@ function initScrollListener() {
       const pct = scrollable > 0 ? (main.scrollTop / scrollable) * 100 : 0;
       bar.style.width = pct + "%";
     }
+    const mainTop = main.getBoundingClientRect().top;
+    let activeTopicId = null;
+    main.querySelectorAll("article.topic[id]").forEach((article) => {
+      if (article.getBoundingClientRect().top - mainTop <= 80)
+        activeTopicId = article.id;
+    });
+    replaceHash(activeNewsletterId, activeTopicId);
   });
 }
 
