@@ -534,6 +534,73 @@ body {
     padding: 2px 7px;
 }
 
+.content-type-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-left: auto;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.content-type-badge--news {
+    background: rgba(242, 106, 28, 0.1);
+    color: var(--orange-text);
+}
+
+.content-type-badge--edu {
+    background: var(--gray-100);
+    color: var(--gray-400);
+}
+
+.topic-section {
+    margin-bottom: 8px;
+}
+
+.topic-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 28px 0 14px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid;
+}
+
+.topic-section--news .topic-section-header {
+    border-color: rgba(242, 106, 28, 0.35);
+}
+
+.topic-section--educational .topic-section-header {
+    border-color: #dbeafe;
+}
+
+.topic-section-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+
+.topic-section--news .topic-section-label {
+    color: var(--orange-text);
+}
+
+.topic-section--educational .topic-section-label {
+    color: #1d4ed8;
+}
+
+.topic-section-date {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray-400);
+    margin-left: auto;
+}
+
 .topic-title {
     font-size: 22px;
     font-weight: 800;
@@ -1043,6 +1110,32 @@ body.dark-mode .topic-title {
 
 body.dark-mode .topic-subtitle {
     color: #888;
+}
+
+body.dark-mode .content-type-badge--news {
+    background: rgba(242, 106, 28, 0.15);
+    color: var(--orange);
+}
+
+body.dark-mode .content-type-badge--edu {
+    background: #2a2a3a;
+    color: #888;
+}
+
+body.dark-mode .topic-section--news .topic-section-header {
+    border-color: rgba(242, 106, 28, 0.25);
+}
+
+body.dark-mode .topic-section--educational .topic-section-header {
+    border-color: #1e2a3a;
+}
+
+body.dark-mode .topic-section--news .topic-section-label {
+    color: var(--orange);
+}
+
+body.dark-mode .topic-section--educational .topic-section-label {
+    color: #93c5fd;
 }
 
 body.dark-mode .topic-intro {

@@ -270,8 +270,15 @@ function exportRenderHSSection(hs, isLast) {
     </div>`;
 }
 
-function exportRenderTopic(topic, number) {
+function exportRenderTopic(topic, number, nlDate) {
   const num = String(number).padStart(2, "0");
+  const isEducational = topic.contentType === "educational";
+  const badgeStyle = isEducational
+    ? "font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;padding:2px 7px;background:#f3f4f6;color:#767676;margin-left:auto;white-space:nowrap;"
+    : "font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;padding:2px 7px;background:rgba(242,106,28,0.1);color:#ae530f;margin-left:auto;white-space:nowrap;";
+  const badgeLabel = isEducational
+    ? "Deep dive"
+    : `What's new${nlDate ? ` · ${nlDate}` : ""}`;
   const tagsHtml = topic.tags
     .map((tagId) => {
       const m = tagMeta[tagId] || {};
@@ -288,6 +295,7 @@ function exportRenderTopic(topic, number) {
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
         <span style="font-size:11px;font-weight:700;color:#767676;letter-spacing:0.06em;">${num}</span>
         <div style="display:flex;gap:5px;">${tagsHtml}</div>
+        <span style="${badgeStyle}">${badgeLabel}</span>
       </div>
       <h2 style="font-family:'Lexend',sans-serif;font-size:22px;font-weight:800;line-height:1.2;color:#000;letter-spacing:-0.02em;margin:0 0 5px;">${topic.title}</h2>
       <p style="font-size:13px;color:#767676;font-style:italic;margin:0 0 20px;">${topic.subtitle}</p>
@@ -305,13 +313,33 @@ function exportAsHTML() {
   const nl = newsletters.find((n) => n.id === activeNewsletterId);
   if (!nl) return;
   const nlTopics = nl.topicIds.map((id) => topicMap[id]).filter(Boolean);
+  const newsTopics = nlTopics.filter(
+    (t) => (t.contentType || "news") === "news",
+  );
+  const eduTopics = nlTopics.filter((t) => t.contentType === "educational");
+  const mixed = newsTopics.length > 0 && eduTopics.length > 0;
+
+  let topicsBodyHtml = "";
+  if (mixed) {
+    let num = 1;
+    const newsSectionHeader = `<div style="display:flex;align-items:center;gap:12px;padding:0 0 14px;margin-bottom:20px;border-bottom:2px solid rgba(242,106,28,0.35);"><span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#ae530f;">What's new</span><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#767676;margin-left:auto;">${nl.date}</span></div>`;
+    const eduSectionHeader = `<div style="display:flex;align-items:center;gap:12px;padding:0 0 14px;margin-bottom:20px;border-bottom:2px solid #DBEAFE;"><span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#1D4ED8;">Deep dive</span></div>`;
+    topicsBodyHtml = `
+      <div style="margin-bottom:8px;">${newsSectionHeader}${newsTopics.map((t) => exportRenderTopic(t, num++, nl.date)).join("")}</div>
+      <div style="margin-bottom:8px;">${eduSectionHeader}${eduTopics.map((t) => exportRenderTopic(t, num++, nl.date)).join("")}</div>`;
+  } else {
+    topicsBodyHtml = nlTopics
+      .map((t, i) => exportRenderTopic(t, i + 1, nl.date))
+      .join("");
+  }
+
   const bodyHTML = `
     <div style="width:100%;box-sizing:border-box;padding:48px 32px;font-family:'Inter',-apple-system,sans-serif;">
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#ae530f;margin-bottom:14px;">${nl.date}</div>
       <h1 style="font-family:'Lexend',sans-serif;font-size:32px;font-weight:800;line-height:1.1;color:#000;letter-spacing:-0.03em;margin:0 0 14px;">${nl.title}</h1>
       <p style="font-size:15px;color:#666;line-height:1.75;margin:0 0 28px;">${nl.description}</p>
       <hr style="height:1px;background:#ebebeb;border:none;margin-bottom:32px;">
-      ${nlTopics.map((t, i) => exportRenderTopic(t, i + 1)).join("")}
+      ${topicsBodyHtml}
     </div>`;
   const html = `<!doctype html>
 <html lang="en">

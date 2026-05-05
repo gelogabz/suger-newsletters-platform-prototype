@@ -28,6 +28,7 @@ const topics = [
 
   {
     id: "ai-agents",
+    contentType: "news",
     title: "AI Agents on the Marketplace",
     subtitle:
       "How the agent layer is reshaping what ISVs list, how they bill, and who buys",
@@ -40,24 +41,24 @@ const topics = [
         headline: "Bedrock Multi-Agent Collaboration: GA Since March 2025",
         body: "Amazon Bedrock's multi-agent framework — announced at re:Invent 2024 and generally available since March 2025 — enables networks of specialized agents to coordinate and delegate tasks autonomously. AWS simultaneously launched the Nova model family (Micro, Lite, Pro) at re:Invent, with Nova Premier following in April 2025 — all optimized for cost and speed on Bedrock-native workloads. For marketplace ISVs, the strategic path is clear: Bedrock-integrated products qualify for ACE co-sell as 'AI-enabled,' and AWS field teams are actively prioritizing agent-compatible listings in their enterprise pipeline.",
         source: {
-          label: "Amazon Bedrock Multi-Agent Docs",
-          url: "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html",
+          label: "Amazon Bedrock Multi-Agent Collaboration",
+          url: "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-multi-agent-collaboration.html",
         },
       },
       {
         tagId: "azure",
         headline:
-          "AI Foundry and Copilot Studio: Agent Distribution Through M365",
-        body: "Microsoft repositioned Azure AI Foundry (announced at Ignite, November 2024) as the central hub for enterprise agent development. The distribution play is the real story: Copilot Studio lets teams build agents that live inside Teams, Outlook, and SharePoint — where enterprise knowledge workers already operate. For ISVs evaluating agent platforms, Azure's pitch is adoption through existing workflows, not a new interface your customers have to learn. Copilot Studio-integrated listings on Azure Marketplace qualify for Azure IP Co-sell Incentivized status, unlocking Microsoft's full field sales motion.",
+          "Microsoft Foundry and Copilot Studio: Agent Distribution Through M365",
+        body: "Microsoft repositioned Microsoft Foundry (rebranded from Azure AI Foundry, announced at Ignite, November 2024) as the central hub for enterprise agent development. The distribution play is the real story: Copilot Studio lets teams build agents that live inside Teams, Outlook, and SharePoint — where enterprise knowledge workers already operate. For ISVs evaluating agent platforms, Azure's pitch is adoption through existing workflows, not a new interface your customers have to learn. Copilot Studio-integrated listings on Azure Marketplace qualify for Azure IP Co-sell Incentivized status, unlocking Microsoft's full field sales motion.",
         source: {
-          label: "Azure AI Foundry Documentation",
-          url: "https://learn.microsoft.com/en-us/azure/ai-studio/",
+          label: "Microsoft Foundry Documentation",
+          url: "https://learn.microsoft.com/en-us/azure/foundry/",
         },
       },
       {
         tagId: "gcp",
         headline: "Agent Marketplace Launched at Cloud Next 2026",
-        body: "Google Cloud launched the Agent Marketplace at Cloud Next 2026 (April 22–24), giving ISVs a dedicated distribution channel for AI agents within Google Cloud Marketplace. At launch, 70+ partner agents are available from Salesforce, SAP, ServiceNow, Workday, Atlassian, Adobe, and others — all discoverable inside Gemini Enterprise without a separate enterprise purchase decision. Google's Agentspace, first announced at Cloud Next 2025, provides the employee-facing interface that surfaces these agents. For ISVs building on GCP, the Agent Marketplace is the fastest path from listing to enterprise buyer discovery.",
+        body: "Google Cloud launched the Agent Marketplace at Cloud Next 2026 (late April 2026), giving ISVs a dedicated distribution channel for AI agents within Google Cloud Marketplace. At launch, 70+ partner agents are available from Salesforce, SAP, ServiceNow, Workday, Atlassian, Adobe, and others — all discoverable inside Gemini Enterprise without a separate enterprise purchase decision. Google's Agentspace, first announced at Cloud Next 2025, provides the employee-facing interface that surfaces these agents. For ISVs building on GCP, the Agent Marketplace is the fastest path from listing to enterprise buyer discovery.",
         source: {
           label: "Google Cloud Next 2026 Wrap Up",
           url: "https://cloud.google.com/blog/topics/google-cloud-next/google-cloud-next-2026-wrap-up",
@@ -70,6 +71,7 @@ const topics = [
 
   {
     id: "concurrent-agreements",
+    contentType: "educational",
     title: "Concurrent Agreements",
     subtitle:
       "Marketplace deal mechanics are catching up to enterprise reality",
@@ -111,6 +113,7 @@ const topics = [
 
   {
     id: "marketplace-certifications",
+    contentType: "news",
     title: "Marketplace Certification Requirements Are Tightening",
     subtitle: "What changed, what's now enforced, and what ISVs need to do",
     tags: ["aws", "azure", "gcp"],
@@ -123,7 +126,7 @@ const topics = [
         body: "AWS's Foundational Technical Review (FTR) is required for ISVs co-selling and listing solutions on AWS Marketplace, assessing security posture, well-architected alignment, and operational readiness. ISVs that pass earn the AWS Qualified Software badge, which is surfaced in marketplace search results and the AWS Partner Solutions Finder. AWS recommends completing the FTR for all software products that run on or integrate with AWS — and ISVs without it find themselves deprioritized in co-sell motions where AWS field teams look for validated partners.",
         source: {
           label: "AWS Partner Foundational Technical Review",
-          url: "https://docs.aws.amazon.com/partner-central/latest/builder-guide/foundational-technical-review.html",
+          url: "https://aws.amazon.com/partners/foundational-technical-review/",
         },
       },
       {
@@ -132,7 +135,7 @@ const topics = [
         body: "Azure Marketplace introduced publisher attestation requirements, where ISVs must self-certify against Microsoft's security baseline and provide documentation on data handling, encryption standards, and vulnerability disclosure processes. The process runs through Partner Center and is renewal-based — publishers who don't complete attestation risk listing suspension. Microsoft Defender for Cloud integration is now strongly recommended (and in some categories required) for Azure Marketplace listings, giving buyers automated security posture visibility into ISV products they purchase.",
         source: {
           label: "Azure Marketplace Certification Policies",
-          url: "https://learn.microsoft.com/en-us/partner-center/marketplace/certification-policies",
+          url: "https://learn.microsoft.com/en-us/azure/marketplace/certification-policies",
         },
       },
       {
@@ -140,8 +143,8 @@ const topics = [
         headline: "Google Cloud Ready and Assured Workloads Alignment",
         body: "GCP's Assured Workloads framework — which provides compliance controls for regulated industries — increasingly requires ISV listings to demonstrate alignment with the compliance postures it enforces. For ISVs targeting government, FSI, or healthcare buyers on GCP, Assured Workloads compatibility is a prerequisite for access to those customer segments. GCP also runs the Google Cloud Ready — Generative AI program, which validates ISV products against GCP's AI platform — products with this designation receive preferential treatment in marketplace search and co-sell campaigns.",
         source: {
-          label: "Google Cloud Ready Program",
-          url: "https://cloud.google.com/partners/resources/google-cloud-ready",
+          label: "Google Cloud Partner Programs",
+          url: "https://cloud.google.com/partners/",
         },
       },
     ],
@@ -153,12 +156,13 @@ const topics = [
 
   {
     id: "google-cloud-next-2026",
+    contentType: "news",
     title: "Google Cloud Next 2026: The Agent Marketplace Opens for Business",
     subtitle:
       "What April's biggest cloud event means for ISVs on all three hyperscalers",
     tags: ["gcp", "aws", "azure"],
     intro:
-      "Google Cloud Next 2026 (April 22–24, Mandalay Bay, Las Vegas) delivered 260 announcements to 32,000+ attendees. For ISVs and channel partners, the headline was the launch of the Agent Marketplace — a new distribution channel for partner-built AI agents inside Google Cloud — backed by a $750M partner innovation fund. Here's what changed for sellers, and what it signals across all three clouds.",
+      "Google Cloud Next 2026 (late April 2026, Las Vegas) delivered 260 announcements to 32,000+ attendees. For ISVs and channel partners, the headline was the launch of the Agent Marketplace — a new distribution channel for partner-built AI agents inside Google Cloud — backed by a $750M partner innovation fund. Here's what changed for sellers, and what it signals across all three clouds.",
     hyperscalers: [
       {
         tagId: "gcp",
@@ -183,10 +187,10 @@ const topics = [
         tagId: "azure",
         headline:
           "Microsoft Doubles Down on M365 as the Agent Distribution Advantage",
-        body: "Rather than launching a competing agent marketplace, Microsoft continued building on Copilot Studio's distribution strength: agents built with Copilot Studio run inside Teams, Outlook, and SharePoint — reaching enterprise users without requiring a separate purchase decision. Azure AI Foundry remains the development control plane, with Azure Marketplace as the transact layer. For ISVs evaluating where to invest agent listing resources, Microsoft's answer to Google's Agent Marketplace is channel penetration through M365's installed base — a different bet, but one with significant enterprise reach.",
+        body: "Rather than launching a competing agent marketplace, Microsoft continued building on Copilot Studio's distribution strength: agents built with Copilot Studio run inside Teams, Outlook, and SharePoint — reaching enterprise users without requiring a separate purchase decision. Microsoft Foundry remains the development control plane, with Azure Marketplace as the transact layer. For ISVs evaluating where to invest agent listing resources, Microsoft's answer to Google's Agent Marketplace is channel penetration through M365's installed base — a different bet, but one with significant enterprise reach.",
         source: {
-          label: "Azure AI Foundry Documentation",
-          url: "https://learn.microsoft.com/en-us/azure/ai-studio/",
+          label: "Microsoft Foundry Documentation",
+          url: "https://learn.microsoft.com/en-us/azure/foundry/",
         },
       },
     ],
@@ -196,6 +200,7 @@ const topics = [
 
   {
     id: "cosell-programs-decoded",
+    contentType: "educational",
     title: "Co-Sell Programs Decoded",
     subtitle: "ACE, Azure IP Co-sell, and GCP Partner Advantage — compared",
     tags: ["aws", "azure", "gcp"],
@@ -226,7 +231,7 @@ const topics = [
         body: "Google Cloud's Partner Advantage program organizes ISVs into Build, Sell, and Service tracks, each with distinct incentives. For marketplace ISVs, the Sell track is most relevant — achieving Partner status unlocks co-sell engagement with GCP field teams, while Premier Partner status adds a dedicated partner development manager and funded campaigns. GCP measures ISV success through Marketplace transactions and Customer Success Plans (CSPs), which tie partner incentives to adoption outcomes rather than just bookings.",
         source: {
           label: "Google Cloud Partner Advantage Program",
-          url: "https://cloud.google.com/partners/partnersearch/partner-advantage",
+          url: "https://cloud.google.com/partners/",
         },
       },
     ],
@@ -236,6 +241,7 @@ const topics = [
 
   {
     id: "snowflake-native-apps",
+    contentType: "educational",
     title: "Snowflake Native App Framework",
     subtitle: "A serious distribution channel for data-adjacent ISVs",
     tags: ["snowflake", "aws", "gcp"],
@@ -278,6 +284,7 @@ const topics = [
 
   {
     id: "private-offer-mechanics",
+    contentType: "educational",
     title: "Private Offer Mechanics: The Full Picture",
     subtitle: "CPPO, MPO, and MCPO — how channel deals actually work",
     tags: ["aws", "azure", "gcp"],
@@ -318,6 +325,7 @@ const topics = [
 
   {
     id: "isv-funding-programs",
+    contentType: "educational",
     title: "ISV Funding Programs: What's on the Table",
     subtitle: "MAP, AMMP, and GCP Partner POC funding compared",
     tags: ["aws", "azure", "gcp"],
@@ -348,7 +356,7 @@ const topics = [
         body: "GCP's Partner Funded POC program covers technical proof-of-concept costs for partner-led deals expected to close as GCP Marketplace transactions. Partners submit deal details and requested funding amounts; Google's partner team approves based on deal size and strategic value. PSO (Professional Services Organization) engagements can also be requested for high-value partner deals, giving ISVs access to Google's own technical resources at no cost. Approval timelines are typically faster than AWS MAP, but funding ceilings are lower.",
         source: {
           label: "Google Cloud Partner Advantage",
-          url: "https://cloud.google.com/partners/partnersearch/partner-advantage",
+          url: "https://cloud.google.com/partners/",
         },
       },
     ],
@@ -358,6 +366,7 @@ const topics = [
 
   {
     id: "byol-vs-saas",
+    contentType: "educational",
     title: "BYOL vs. SaaS Listings",
     subtitle:
       "Choosing the right model — and why it changes your co-sell eligibility",
@@ -402,6 +411,7 @@ const topics = [
 
   {
     id: "payment-disbursement",
+    contentType: "educational",
     title: "When Does the Money Land?",
     subtitle:
       "Settlement timelines across AWS, Azure, and GCP — and why they matter for ISV cash flow",
@@ -444,6 +454,7 @@ const topics = [
 
   {
     id: "revenue-share-fees",
+    contentType: "educational",
     title: "What the House Takes",
     subtitle:
       "Marketplace fee structures across AWS, Azure, and GCP — modeled for ISV deal desks",
@@ -486,6 +497,7 @@ const topics = [
 
   {
     id: "tax-marketplace-facilitator",
+    contentType: "news",
     title: "The Tax You Don't See",
     subtitle:
       "How marketplace facilitator laws work — and what ISVs still owe on their own",
@@ -519,7 +531,7 @@ const topics = [
         body: "Google Cloud acts as the marketplace facilitator for covered jurisdictions, collecting applicable sales tax and VAT on GCP Marketplace transactions. ISVs should note that GCP's disbursement structure routes payments through regional Google entities depending on seller configuration — the entity processing your payment determines which tax treatment applies to international transactions. ISVs whose products span both marketplace and direct billing channels should ensure their tax compliance posture accounts for both: facilitated treatment covers marketplace transactions, but direct deals, API billing, or services sold outside GCP Marketplace are not covered.",
         source: {
           label: "GCP Marketplace — Tax and Payments",
-          url: "https://cloud.google.com/marketplace/docs/partners/receive-payments",
+          url: "https://docs.cloud.google.com/marketplace/docs/partners/receive-payments",
         },
       },
     ],
@@ -531,6 +543,7 @@ const topics = [
 
   {
     id: "marketplace-2025-review",
+    contentType: "news",
     title: "2025 Cloud Marketplace Year in Review",
     subtitle: "The numbers, the shifts, and what actually changed for ISVs",
     tags: ["aws", "azure", "gcp"],
@@ -549,10 +562,10 @@ const topics = [
       {
         tagId: "azure",
         headline: "MACC Eligibility Becomes the Key Azure Differentiator",
-        body: "Microsoft Azure Consumption Commitments (MACC) — Azure's committed spend program — expanded its eligible ISV roster significantly in 2025, giving more marketplace ISVs the ability to help customers draw down their Azure commitments. For buyers, MACC-eligible purchases through Azure Marketplace reduce their committed spend balance, creating strong purchasing incentive. For ISVs, achieving MACC eligibility (requiring Azure IP Co-sell Incentivized status) became a primary 2025 objective — separating ISVs generating real pipeline from those with directory-only listings.",
+        body: "Microsoft Azure Consumption Commitments (MACC) — Azure's committed spend program — expanded its eligible ISV roster significantly in 2025, giving more marketplace ISVs the ability to help customers draw down their Azure commitments. For buyers, MACC-eligible purchases through Azure Marketplace reduce their committed spend balance, creating strong purchasing incentive. For ISVs, achieving MACC eligibility (requiring Azure IP Co-sell eligible status) became a primary 2025 objective — separating ISVs generating real pipeline from those with directory-only listings.",
         source: {
           label: "Azure Consumption Commitments for ISVs",
-          url: "https://learn.microsoft.com/en-us/partner-center/marketplace/azure-consumption-commitment-benefit",
+          url: "https://learn.microsoft.com/en-us/partner-center/marketplace-offers/azure-consumption-commitment-enrollment",
         },
       },
       {
@@ -561,7 +574,7 @@ const topics = [
         body: "Google Cloud expanded the roster of ISV solutions that qualify for commit drawdown — where customers apply Google Cloud Marketplace purchases against their GCP committed spend obligations. As of June 2025, all qualifying Channel Private Offer purchases result in 100% commit drawdown against the customer's minimum commitment, up to a 25% cap. GCP's committed spend pool is smaller than AWS EDP or Azure MACC in absolute terms, but the eligible ISV roster is growing alongside GCP's AI infrastructure momentum.",
         source: {
           label: "GCP Marketplace Committed Use",
-          url: "https://cloud.google.com/marketplace/docs/partners/integrated-saas/listing-saas",
+          url: "https://docs.cloud.google.com/marketplace/docs/partners/integrated-saas/listing-saas",
         },
       },
     ],
@@ -571,6 +584,7 @@ const topics = [
 
   {
     id: "partner-program-changes-2025",
+    contentType: "news",
     title: "Partner Program Changes That Mattered in 2025",
     subtitle: "APN restructured, MAICPP launched, GCP adds AI specializations",
     tags: ["aws", "azure", "gcp"],
@@ -593,7 +607,7 @@ const topics = [
         body: "Microsoft launched the Microsoft AI Cloud Partner Program (MAICPP) at Microsoft Inspire in July 2023, replacing the legacy Gold/Silver competency model with Solutions Partner designations, and continued expanding it through 2024–2025. For Azure Marketplace ISVs, the most impactful change is the addition of AI and Data solution area designations that unlock new co-sell opportunities and Microsoft-funded campaigns. Partners with AI-adjacent products who achieve Solution Partner designation in the Data & AI area gain access to Microsoft's AI customer activation programs — a direct path to buyers actively evaluating AI investments.",
         source: {
           label: "Microsoft AI Cloud Partner Program",
-          url: "https://learn.microsoft.com/en-us/partner-center/intro-to-cloud-partner-program-membership",
+          url: "https://learn.microsoft.com/en-us/partner-center/membership/intro-to-cloud-partner-program-membership",
         },
       },
       {
@@ -602,7 +616,7 @@ const topics = [
         body: "GCP's Partner Advantage program added AI specializations in 2025, recognizing partners with demonstrated expertise in Vertex AI, Gemini, and cloud-native AI deployment. The most relevant new designation for ISVs is the Google Cloud Ready — Generative AI validation, which signals to GCP buyers that an ISV's product is optimized for GCP's AI infrastructure. Achieving this designation requires product testing against GCP's AI platform, documentation requirements, and customer reference submissions — a 2–3 month process that pays off in enhanced marketplace visibility and co-sell prioritization.",
         source: {
           label: "Google Cloud Partner Specializations",
-          url: "https://cloud.google.com/partners/partnersearch/partner-advantage",
+          url: "https://cloud.google.com/partners/",
         },
       },
     ],
@@ -1174,6 +1188,7 @@ const topics = [
 
   {
     id: "marketplace-outlook-2026",
+    contentType: "educational",
     title: "What to Watch in 2026",
     subtitle:
       "Where cloud marketplace growth is going — and what ISVs should do now",

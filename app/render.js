@@ -40,9 +40,15 @@ function renderLayout() {
         .map((nl, ni) => {
           const isActive = nl.id === activeNl.id;
           const isExtra = ni >= VISIBLE_MONTHS;
-          const nlTopics = nl.topicIds
+          const nlTopicsRaw = nl.topicIds
             .map((id) => topicMap[id])
             .filter(Boolean);
+          const {
+            news: nlNews,
+            educational: nlEdu,
+            mixed: nlMixed,
+          } = groupTopicsByType(nlTopicsRaw);
+          const nlTopics = nlMixed ? [...nlNews, ...nlEdu] : nlTopicsRaw;
           const nlTagDots = [...(newsletterTags[nl.id] || [])]
             .map((tagId) => {
               const m = tagMeta[tagId] || {};
@@ -154,8 +160,44 @@ function renderLayout() {
     <button class="back-to-top" id="back-to-top" onclick="scrollMainToTop()" aria-label="Back to top">↑</button>`;
 }
 
+function groupTopicsByType(topics) {
+  const news = topics.filter((t) => (t.contentType || "news") === "news");
+  const educational = topics.filter((t) => t.contentType === "educational");
+  return {
+    news,
+    educational,
+    mixed: news.length > 0 && educational.length > 0,
+  };
+}
+
 function renderNewsletterContent(nl) {
   const nlTopics = nl.topicIds.map((id) => topicMap[id]).filter(Boolean);
+  const { news, educational, mixed } = groupTopicsByType(nlTopics);
+  const orderedTopics = mixed ? [...news, ...educational] : nlTopics;
+
+  let topicsHtml = "";
+  if (mixed) {
+    let num = 1;
+    topicsHtml = `
+      <section class="topic-section topic-section--news">
+        <div class="topic-section-header">
+          <span class="topic-section-label">What's new</span>
+          <span class="topic-section-date">${nl.date}</span>
+        </div>
+        ${news.map((t) => renderTopic(t, num++, nl.date)).join("")}
+      </section>
+      <section class="topic-section topic-section--educational">
+        <div class="topic-section-header">
+          <span class="topic-section-label">Deep dive</span>
+        </div>
+        ${educational.map((t) => renderTopic(t, num++, nl.date)).join("")}
+      </section>`;
+  } else {
+    topicsHtml = nlTopics
+      .map((t, i) => renderTopic(t, i + 1, nl.date))
+      .join("");
+  }
+
   return `
     <div class="reading-progress-wrap"><div class="reading-progress" id="reading-progress"></div></div>
     <div class="content">
@@ -165,7 +207,7 @@ function renderNewsletterContent(nl) {
         <p class="nl-description">${nl.description}</p>
         <div class="nl-divider"></div>
         <nav class="nl-nav">
-          ${nlTopics
+          ${orderedTopics
             .map(
               (t, i) => `
             <a href="#${t.id}" class="nl-nav-item" onclick="smoothScrollTo(event,'${t.id}')">
@@ -176,7 +218,7 @@ function renderNewsletterContent(nl) {
             .join("")}
         </nav>
       </div>
-      ${nlTopics.map((t, i) => renderTopic(t, i + 1)).join("")}
+      ${topicsHtml}
       <footer class="site-footer">
         <div class="footer-grid">
           <div class="footer-col">
@@ -209,8 +251,12 @@ function renderNewsletterContent(nl) {
     </div>`;
 }
 
-function renderTopic(topic, number) {
+function renderTopic(topic, number, nlDate) {
   const num = String(number).padStart(2, "0");
+  const isEducational = topic.contentType === "educational";
+  const badgeHtml = isEducational
+    ? `<span class="content-type-badge content-type-badge--edu">Deep dive</span>`
+    : `<span class="content-type-badge content-type-badge--news">What's new${nlDate ? ` · ${nlDate}` : ""}</span>`;
   return `
     <article class="topic" id="${topic.id}">
       <div class="topic-eyebrow">
@@ -223,6 +269,7 @@ function renderTopic(topic, number) {
             })
             .join("")}
         </div>
+        ${badgeHtml}
       </div>
       <h2 class="topic-title">${topic.title}</h2>
       <p class="topic-subtitle">${topic.subtitle}</p>
