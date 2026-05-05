@@ -81,10 +81,8 @@ body {
 }
 
 .masthead-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--orange);
+    width: 22px;
+    height: 22px;
     flex-shrink: 0;
 }
 
@@ -455,7 +453,7 @@ body {
     color: var(--gray-500);
     line-height: 1.75;
     margin-bottom: 28px;
-    max-width: 500px;
+    max-width: 50%;
 }
 
 .nl-divider {
@@ -1167,6 +1165,9 @@ body.dark-mode mark.search-highlight {
     }
     .nl-title {
         font-size: 26px;
+    }
+    .nl-description {
+        max-width: 100%;
     }
     .back-to-top {
         bottom: 20px;
