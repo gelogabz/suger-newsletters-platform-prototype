@@ -9,8 +9,8 @@ function renderFilterBar() {
       onclick="toggleFilter('${id}')">${m.label}<span class="pill-count">${count}</span></button>`;
     })
     .join("");
-  return `<div class="filterbar" id="filterbar">
-    <span class="filterbar-label">Filter</span>
+  return `<div class="filterbar" id="filterbar" role="group" aria-label="Filter by hyperscaler">
+    <span class="filterbar-label" aria-hidden="true">Filter</span>
     <button class="filter-pill active" id="filter-all" onclick="clearFilters()">All</button>
     ${pills}
   </div>`;
@@ -132,7 +132,7 @@ function renderLayout() {
     </header>
     ${renderFilterBar()}
     <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-label="Newsletters">
       <div class="sidebar-label">Newsletters</div>
       <div class="sidebar-search">
         <input class="sidebar-search-input" type="search" placeholder="Search newsletters…" oninput="handleSearch(this.value)" autocomplete="off" />
@@ -143,7 +143,7 @@ function renderLayout() {
       <main class="main" id="main-content">
         ${renderNewsletterContent(activeNl)}
       </main>
-      <aside class="glossary-panel" id="glossary-panel">
+      <aside class="glossary-panel" id="glossary-panel" aria-label="Marketplace Glossary">
         <div class="glossary-panel-header">
           <span class="glossary-panel-title">Marketplace Glossary</span>
           <button class="glossary-close" onclick="toggleGlossary()" aria-label="Close glossary">&times;</button>
@@ -219,7 +219,7 @@ function renderNewsletterContent(nl) {
         <h1 class="nl-title">${nl.title}</h1>
         <p class="nl-description">${nl.description}</p>
         <div class="nl-divider"></div>
-        <nav class="nl-nav">
+        <nav class="nl-nav" aria-label="In this edition">
           ${orderedTopics
             .map(
               (t, i) => `

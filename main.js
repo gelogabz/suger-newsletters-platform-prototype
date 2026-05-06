@@ -62,6 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
       ? newsletterId
       : null;
   activeNewsletterId = validId || newsletters[0].id;
+  const initialNl = newsletters.find((n) => n.id === activeNewsletterId);
+  if (initialNl) document.title = `${initialNl.title} — Suger Cube`;
 
   document.getElementById("app").innerHTML = renderLayout();
   initScrollListener();
@@ -106,6 +108,7 @@ function selectNewsletter(id, updateHash = true) {
   });
 
   const nl = newsletters.find((n) => n.id === id);
+  document.title = `${nl.title} — Suger Cube`;
   const main = document.getElementById("main-content");
   main.innerHTML = renderNewsletterContent(nl);
   main.scrollTo({ top: 0, behavior: "smooth" });
