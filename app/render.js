@@ -135,7 +135,10 @@ function renderLayout() {
     <aside class="sidebar" id="sidebar" aria-label="Newsletters">
       <div class="sidebar-label">Newsletters</div>
       <div class="sidebar-search">
-        <input class="sidebar-search-input" type="search" placeholder="Search newsletters…" oninput="handleSearch(this.value)" autocomplete="off" />
+        <div class="sidebar-search-wrap">
+          <svg class="sidebar-search-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="sidebar-search-input" type="search" placeholder="Search newsletters…" oninput="handleSearch(this.value)" autocomplete="off" aria-label="Search newsletters" />
+        </div>
       </div>
       ${sidebarGroups}
     </aside>
@@ -189,6 +192,39 @@ function renderNewsletterContent(nl) {
   const { news, educational, mixed } = groupTopicsByType(nlTopics);
   const orderedTopics = mixed ? [...news, ...educational] : nlTopics;
 
+  const issueLabel = `Issue ${String(nl.issue).padStart(2, "0")} · ${nl.date}`;
+
+  const nlIndex = newsletters.findIndex((n) => n.id === nl.id);
+  const prevNl =
+    nlIndex < newsletters.length - 1 ? newsletters[nlIndex + 1] : null;
+  const nextNl = nlIndex > 0 ? newsletters[nlIndex - 1] : null;
+  const editionNavHtml =
+    prevNl || nextNl
+      ? `
+    <nav class="edition-nav" aria-label="Browse editions">
+      ${
+        prevNl
+          ? `
+        <button class="edition-nav-btn" onclick="selectNewsletter('${prevNl.id}')">
+          <span class="edition-nav-direction">← Previous edition</span>
+          <span class="edition-nav-date">${prevNl.date}</span>
+          <span class="edition-nav-title">${prevNl.title}</span>
+        </button>`
+          : `<div></div>`
+      }
+      ${
+        nextNl
+          ? `
+        <button class="edition-nav-btn edition-nav-btn--next" onclick="selectNewsletter('${nextNl.id}')">
+          <span class="edition-nav-direction">Next edition →</span>
+          <span class="edition-nav-date">${nextNl.date}</span>
+          <span class="edition-nav-title">${nextNl.title}</span>
+        </button>`
+          : `<div></div>`
+      }
+    </nav>`
+      : "";
+
   let topicsHtml = "";
   if (mixed) {
     let num = 1;
@@ -198,7 +234,7 @@ function renderNewsletterContent(nl) {
           <span class="topic-section-label">What's new</span>
           <span class="topic-section-date">${nl.date}</span>
         </div>
-        ${news.map((t) => renderTopic(t, num++, nl.date)).join("")}
+        ${news.map((t) => renderTopic(t, num++, nl.date, t.featured === true)).join("")}
       </section>
       <section class="topic-section topic-section--educational">
         <div class="topic-section-header">
@@ -208,16 +244,17 @@ function renderNewsletterContent(nl) {
       </section>`;
   } else {
     topicsHtml = nlTopics
-      .map((t, i) => renderTopic(t, i + 1, nl.date))
+      .map((t, i) => renderTopic(t, i + 1, nl.date, t.featured === true))
       .join("");
   }
 
   return `
     <div class="content">
       <div class="nl-header">
-        <div class="nl-eyebrow">${nl.date}</div>
+        <div class="nl-eyebrow">${issueLabel}</div>
         <h1 class="nl-title">${nl.title}</h1>
         <p class="nl-description">${nl.description}</p>
+        <p class="nl-tagline">For sales teams, founders, and enterprise buyers navigating cloud marketplace deals.</p>
         <div class="nl-divider"></div>
         <nav class="nl-nav" aria-label="In this edition">
           ${orderedTopics
@@ -232,6 +269,7 @@ function renderNewsletterContent(nl) {
         </nav>
       </div>
       ${topicsHtml}
+      ${editionNavHtml}
       <footer class="site-footer">
         <div class="footer-grid">
           <div class="footer-col">
@@ -264,14 +302,14 @@ function renderNewsletterContent(nl) {
     </div>`;
 }
 
-function renderTopic(topic, number, nlDate) {
+function renderTopic(topic, number, nlDate, isFeatured = false) {
   const num = String(number).padStart(2, "0");
   const isEducational = topic.contentType === "educational";
   const badgeHtml = isEducational
     ? `<span class="content-type-badge content-type-badge--edu">Deep dive</span>`
     : `<span class="content-type-badge content-type-badge--news">What's new${nlDate ? ` · ${nlDate}` : ""}</span>`;
   return `
-    <article class="topic" id="${topic.id}">
+    <article class="topic${isFeatured ? " topic--featured" : ""}" id="${topic.id}">
       <div class="topic-eyebrow">
         <span class="topic-num">${num}</span>
         <div class="topic-tags">

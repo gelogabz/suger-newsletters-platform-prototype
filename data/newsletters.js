@@ -18,6 +18,7 @@
 const newsletters = [
   {
     id: "nl-001",
+    issue: 5,
     title:
       "AI Agents Go Enterprise, Certifications Tighten & Deal Mechanics Mature",
     date: "May 2026",
@@ -31,6 +32,7 @@ const newsletters = [
   },
   {
     id: "nl-002",
+    issue: 4,
     title:
       "Cloud Next 2026 Debrief, Co-Sell Decoded & Snowflake's Marketplace Moment",
     date: "April 2026",
@@ -44,6 +46,7 @@ const newsletters = [
   },
   {
     id: "nl-003",
+    issue: 3,
     title: "Private Offers, ISV Funding & the BYOL Question",
     date: "March 2026",
     description:
@@ -56,6 +59,7 @@ const newsletters = [
   },
   {
     id: "nl-004",
+    issue: 2,
     title:
       "Follow the Money: Disbursement Timelines, Fee Structures & Marketplace Tax",
     date: "February 2026",
@@ -69,6 +73,7 @@ const newsletters = [
   },
   {
     id: "nl-005",
+    issue: 1,
     title: "2025 in Review: Partner Changes & What ISVs Should Watch",
     date: "January 2026",
     description:

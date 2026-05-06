@@ -29,6 +29,7 @@ const topics = [
   {
     id: "ai-agents",
     contentType: "news",
+    featured: true,
     title: "AI Agents on the Marketplace",
     subtitle:
       "How the agent layer is reshaping what ISVs list, how they bill, and who buys",
@@ -157,6 +158,7 @@ const topics = [
   {
     id: "google-cloud-next-2026",
     contentType: "news",
+    featured: true,
     title: "Google Cloud Next 2026: The Agent Marketplace Opens for Business",
     subtitle:
       "What April's biggest cloud event means for ISVs on all three hyperscalers",
@@ -285,6 +287,7 @@ const topics = [
   {
     id: "private-offer-mechanics",
     contentType: "educational",
+    featured: true,
     title: "Private Offer Mechanics: The Full Picture",
     subtitle: "CPPO, MPO, and MCPO — how channel deals actually work",
     tags: ["aws", "azure", "gcp"],
@@ -498,6 +501,7 @@ const topics = [
   {
     id: "tax-marketplace-facilitator",
     contentType: "news",
+    featured: true,
     title: "The Tax You Don't See",
     subtitle:
       "How marketplace facilitator laws work — and what ISVs still owe on their own",
@@ -544,6 +548,7 @@ const topics = [
   {
     id: "marketplace-2025-review",
     contentType: "news",
+    featured: true,
     title: "2025 Cloud Marketplace Year in Review",
     subtitle: "The numbers, the shifts, and what actually changed for ISVs",
     tags: ["aws", "azure", "gcp"],

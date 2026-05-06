@@ -16,21 +16,39 @@ function setNavigating() {
   }, 700);
 }
 
+function nlSlug(id) {
+  const nl = newsletters.find((n) => n.id === id);
+  return nl ? `issue-${String(nl.issue).padStart(2, "0")}` : id;
+}
+
+function nlIdFromSlug(slug) {
+  if (slug.startsWith("issue-")) {
+    const num = parseInt(slug.slice(6), 10);
+    const nl = newsletters.find((n) => n.issue === num);
+    return nl ? nl.id : null;
+  }
+  // legacy nl-001 format — still resolve so old bookmarks don't break
+  return newsletters.find((n) => n.id === slug) ? slug : null;
+}
+
 function parseHash() {
   const raw = location.hash.slice(1);
   if (!raw) return { newsletterId: null, topicId: null };
   const slash = raw.indexOf("/");
-  if (slash === -1) return { newsletterId: raw, topicId: null };
-  return { newsletterId: raw.slice(0, slash), topicId: raw.slice(slash + 1) };
+  const slug = slash === -1 ? raw : raw.slice(0, slash);
+  const topicId = slash === -1 ? null : raw.slice(slash + 1);
+  return { newsletterId: nlIdFromSlug(slug), topicId };
 }
 
 function pushHash(newsletterId, topicId) {
-  const hash = topicId ? `#${newsletterId}/${topicId}` : `#${newsletterId}`;
+  const slug = nlSlug(newsletterId);
+  const hash = topicId ? `#${slug}/${topicId}` : `#${slug}`;
   history.pushState(null, "", hash);
 }
 
 function replaceHash(newsletterId, topicId) {
-  const hash = topicId ? `#${newsletterId}/${topicId}` : `#${newsletterId}`;
+  const slug = nlSlug(newsletterId);
+  const hash = topicId ? `#${slug}/${topicId}` : `#${slug}`;
   history.replaceState(null, "", hash);
 }
 
