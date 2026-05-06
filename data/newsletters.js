@@ -2,7 +2,8 @@
   Template — add a new newsletter issue:
 
   {
-    id: "nl-000",               // unique slug, used in URLs and sidebar
+    id: "nl-000",               // unique slug, used internally
+    issue: 0,                   // chronological issue number — drives URL slug (#issue-00) and eyebrow display
     title: "Newsletter Title",
     date: "Month YYYY",         // e.g. "June 2026" — drives sidebar grouping by year
     description: "One-sentence summary shown under the title.",

@@ -1441,6 +1441,12 @@ body.dark-mode .scroll-logo-ghost {
     .edition-nav-btn {
         max-width: 100%;
     }
+    .topic-eyebrow {
+        flex-wrap: wrap;
+    }
+    .content-type-badge {
+        margin-left: 0;
+    }
     .back-to-top {
         bottom: 20px;
         right: 20px;

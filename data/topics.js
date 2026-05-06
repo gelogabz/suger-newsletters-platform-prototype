@@ -3,6 +3,8 @@
 
   {
     id: "topic-slug",           // unique slug, must match topicIds in newsletters.js
+    contentType: "news",        // "news" | "educational" — required
+    featured: true,             // optional — at most one per edition; see CLAUDE.md Content Guidelines
     title: "Topic Title",
     subtitle: "One-line frame of the topic",
     tags: ["aws", "azure", "gcp"],  // controls filter matching and tag pills; use ids from tags.js
