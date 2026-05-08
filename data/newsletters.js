@@ -1,11 +1,11 @@
 /*
-  Template — add a new newsletter issue:
+  Template — add a new newsletter edition:
 
   {
     id: "nl-000",               // unique slug, used internally
-    issue: 0,                   // chronological issue number — drives URL slug (#issue-00) and eyebrow display
+    edition: 0,                 // chronological edition number — drives URL slug (#edition-00) and eyebrow display
     title: "Newsletter Title",
-    date: "Month YYYY",         // e.g. "June 2026" — drives sidebar grouping by year
+    date: "Month YYYY",         // e.g. "June 2026"
     description: "One-sentence summary shown under the title.",
     topicIds: [                 // references ids in topics.js, rendered in order
       "topic-slug-1",
@@ -13,41 +13,41 @@
     ],
   },
 
-  Newest issue goes first. Tags are derived automatically from the linked topics.
+  Newest edition goes first. Tags are derived automatically from the linked topics.
 */
 
 const newsletters = [
   {
     id: "nl-001",
-    issue: 5,
+    edition: 5,
     title:
-      "AI Agents Go Enterprise, Certifications Tighten & Deal Mechanics Mature",
+      "Sample — AI Agent Listings Are Getting Competitive, Fees Changed, and Co-Sell Is Not What You Think",
     date: "May 2026",
     description:
-      "Enterprise AI agents land in the marketplace, listing requirements raise the bar, and concurrent agreement mechanics become a deal-closer tool.",
+      "One month after GCP's Agent Marketplace launch, the AI agent category is already crowded. Plus: three fee structure changes that affect your net revenue, and what co-sell readiness actually requires.",
     topicIds: [
-      "ai-agents",
-      "concurrent-agreements",
-      "marketplace-certifications",
+      "sample-may-ai-listings-surge",
+      "sample-may-fee-structures",
+      "sample-may-cosell-readiness",
     ],
   },
   {
     id: "nl-002",
-    issue: 4,
+    edition: 4,
     title:
-      "Cloud Next 2026 Debrief, Co-Sell Decoded & Snowflake's Marketplace Moment",
+      "Sample — Cloud Next 2026 Opens the Agent Era, Faster Private Offers, and Committed Spend Decoded",
     date: "April 2026",
     description:
-      "Google Cloud Next 2026 recap with partner implications, a plain-English breakdown of co-sell programs, and why Snowflake Native Apps matter for ISVs.",
+      "GCP's Agent Marketplace goes live with $750M behind it, AWS and Azure close faster with Express Offers and renewal fee cuts, and a plain-English breakdown of EDP, MACC, and GCP committed spend for sales teams.",
     topicIds: [
-      "google-cloud-next-2026",
-      "cosell-programs-decoded",
-      "snowflake-native-apps",
+      "sample-apr-agent-marketplace",
+      "sample-apr-express-deals",
+      "sample-apr-committed-spend-101",
     ],
   },
   {
     id: "nl-003",
-    issue: 3,
+    edition: 3,
     title: "Private Offers, ISV Funding & the BYOL Question",
     date: "March 2026",
     description:
@@ -60,7 +60,7 @@ const newsletters = [
   },
   {
     id: "nl-004",
-    issue: 2,
+    edition: 2,
     title:
       "Follow the Money: Disbursement Timelines, Fee Structures & Marketplace Tax",
     date: "February 2026",
@@ -74,7 +74,7 @@ const newsletters = [
   },
   {
     id: "nl-005",
-    issue: 1,
+    edition: 1,
     title: "2025 in Review: Partner Changes & What ISVs Should Watch",
     date: "January 2026",
     description:

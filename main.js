@@ -1,12 +1,13 @@
 const topicMap = {};
 const newsletterTags = {};
-const activeFilters = new Set();
 let activeNewsletterId;
-let currentSearch = "";
-let searchTimeout = null;
+let activePersona = "all";
 let isNavigating = false;
 let navigatingTimer = null;
 let urlUpdateTimer = null;
+
+// Last focused element before opening a modal — restored on close
+let modalReturnFocus = null;
 
 function setNavigating() {
   isNavigating = true;
@@ -16,15 +17,23 @@ function setNavigating() {
   }, 700);
 }
 
+// ── URL routing ──────────────────────────────────────────────────────────────
+
 function nlSlug(id) {
   const nl = newsletters.find((n) => n.id === id);
-  return nl ? `issue-${String(nl.issue).padStart(2, "0")}` : id;
+  return nl ? `edition-${String(nl.edition).padStart(2, "0")}` : id;
 }
 
 function nlIdFromSlug(slug) {
+  if (slug.startsWith("edition-")) {
+    const num = parseInt(slug.slice(8), 10);
+    const nl = newsletters.find((n) => n.edition === num);
+    return nl ? nl.id : null;
+  }
+  // legacy issue-NN format — still resolve so old bookmarks don't break
   if (slug.startsWith("issue-")) {
     const num = parseInt(slug.slice(6), 10);
-    const nl = newsletters.find((n) => n.issue === num);
+    const nl = newsletters.find((n) => n.edition === num);
     return nl ? nl.id : null;
   }
   // legacy nl-001 format — still resolve so old bookmarks don't break
@@ -53,15 +62,12 @@ function replaceHash(newsletterId, topicId) {
 }
 
 function onNavigate() {
-  const { newsletterId, topicId } = parseHash();
-  if (!newsletterId) return;
-  if (newsletterId !== activeNewsletterId) {
-    selectNewsletter(newsletterId, false);
-    if (topicId) setTimeout(() => scrollToTopic(topicId), 80);
-  } else if (topicId) {
-    scrollToTopic(topicId);
-  }
+  const { newsletterId } = parseHash();
+  if (!newsletterId || newsletterId === activeNewsletterId) return;
+  selectNewsletter(newsletterId, false);
 }
+
+// ── Bootstrap ────────────────────────────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
   topics.forEach((t) => (topicMap[t.id] = t));
@@ -86,27 +92,36 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("app").innerHTML = renderLayout();
   initScrollListener();
   initDarkMode();
+  initOnboarding();
+
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".export-wrap")) closeExportMenu();
   });
 
-  if (validId) ensureNewsletterVisible(activeNewsletterId);
-  if (!location.hash) history.replaceState(null, "", `#${activeNewsletterId}`);
-  if (topicId) setTimeout(() => scrollToTopic(topicId), 80);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const onb = document.getElementById("onboarding");
+      const ed = document.getElementById("editions-panel");
+      if (onb && !onb.classList.contains("onb-hidden")) {
+        onbSkip();
+        return;
+      }
+      if (ed && !ed.hasAttribute("hidden")) {
+        closeEditionsPanel();
+        return;
+      }
+      closeExportMenu();
+      closeGlossary();
+    }
+  });
+
+  if (!location.hash) replaceHash(activeNewsletterId, null);
 
   window.addEventListener("popstate", onNavigate);
   window.addEventListener("hashchange", onNavigate);
 });
 
-function ensureNewsletterVisible(id) {
-  const item = document.querySelector(`.sidebar-item[data-id="${id}"]`);
-  if (!item) return;
-  const yearGroup = item.closest(".sidebar-year-group");
-  if (yearGroup?.classList.contains("collapsed"))
-    yearGroup.classList.remove("collapsed");
-  if (item.classList.contains("sidebar-month-extra"))
-    yearGroup?.classList.add("months-expanded");
-}
+// ── Newsletter selection ─────────────────────────────────────────────────────
 
 function selectNewsletter(id, updateHash = true) {
   if (id === activeNewsletterId) return;
@@ -114,49 +129,32 @@ function selectNewsletter(id, updateHash = true) {
 
   if (updateHash) pushHash(id, null);
   closeGlossary();
-  closeMobileMenu();
-  ensureNewsletterVisible(id);
-
-  document.querySelectorAll(".sidebar-item").forEach((el) => {
-    el.classList.toggle("active", el.dataset.id === id);
-  });
-
-  document.querySelectorAll(".sidebar-topics").forEach((el) => {
-    el.classList.toggle("visible", el.dataset.nl === id);
-  });
 
   const nl = newsletters.find((n) => n.id === id);
   document.title = `${nl.title} — Suger Cube`;
+
+  // Update edition trigger label in masthead
+  const editionLabel = `Edition ${String(nl.edition).padStart(2, "0")}`;
+  const triggerLabel = document.getElementById("editions-trigger-label");
+  if (triggerLabel) triggerLabel.textContent = editionLabel;
+
+  // Update editions panel active state
+  document.querySelectorAll(".edition-card").forEach((card) => {
+    card.classList.toggle("edition-card--active", card.dataset.id === id);
+  });
+
   const main = document.getElementById("main-content");
   main.innerHTML = renderNewsletterContent(nl);
   main.scrollTo({ top: 0, behavior: "smooth" });
-  if (currentSearch) {
-    const terms = currentSearch.split(/\s+/).filter(Boolean);
-    highlightKeywords(main, terms);
-  }
+  applyPersonaToFeed();
 }
 
-function navigateToTopic(newsletterId, topicId) {
-  pushHash(newsletterId, topicId);
-  setNavigating();
-  if (newsletterId !== activeNewsletterId) {
-    selectNewsletter(newsletterId, false);
-    setTimeout(() => scrollToTopic(topicId), 80);
-  } else {
-    scrollToTopic(topicId);
-  }
-  closeMobileMenu();
+function selectEditionFromPanel(id) {
+  closeEditionsPanel();
+  if (id !== activeNewsletterId) selectNewsletter(id);
 }
 
-function scrollToTopic(topicId) {
-  const el = document.getElementById(topicId);
-  const main = document.getElementById("main-content");
-  if (!el || !main) return;
-  setNavigating();
-  const offset =
-    el.getBoundingClientRect().top - main.getBoundingClientRect().top;
-  main.scrollBy({ top: offset - 24, behavior: "smooth" });
-}
+// ── Scroll + URL sync ────────────────────────────────────────────────────────
 
 function initScrollListener() {
   const main = document.getElementById("main-content");
@@ -164,14 +162,6 @@ function initScrollListener() {
   main.addEventListener("scroll", () => {
     const btn = document.getElementById("back-to-top");
     if (btn) btn.classList.toggle("visible", main.scrollTop > 300);
-    const logo = document.getElementById("scroll-logo");
-    const logoFill = document.getElementById("scroll-logo-fill");
-    if (logo && logoFill) {
-      const scrollable = main.scrollHeight - main.clientHeight;
-      const pct = scrollable > 0 ? (main.scrollTop / scrollable) * 100 : 0;
-      logo.classList.toggle("visible", main.scrollTop > 20);
-      logoFill.style.clipPath = `inset(${100 - pct}% 0 0 0)`;
-    }
     if (isNavigating) return;
     clearTimeout(urlUpdateTimer);
     urlUpdateTimer = setTimeout(() => {
@@ -192,27 +182,16 @@ function scrollMainToTop() {
     ?.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function smoothScrollTo(event, id) {
-  event.preventDefault();
-  pushHash(activeNewsletterId, id);
-  setNavigating();
-  const el = document.getElementById(id);
-  const main = document.getElementById("main-content");
-  if (!el || !main) return;
-  const offset =
-    el.getBoundingClientRect().top - main.getBoundingClientRect().top;
-  main.scrollBy({ top: offset - 24, behavior: "smooth" });
-}
+// ── Glossary panel ───────────────────────────────────────────────────────────
 
 function toggleGlossary() {
   const panel = document.getElementById("glossary-panel");
   const btn = document.getElementById("glossary-btn");
   const iframe = document.getElementById("glossary-iframe");
   if (!panel || !btn) return;
-
   const isOpen = panel.classList.toggle("open");
   btn.classList.toggle("active", isOpen);
-
+  btn.setAttribute("aria-expanded", String(isOpen));
   if (isOpen && iframe && !iframe.src && iframe.dataset.src) {
     iframe.src = iframe.dataset.src;
   }
@@ -220,80 +199,71 @@ function toggleGlossary() {
 
 function closeGlossary() {
   document.getElementById("glossary-panel")?.classList.remove("open");
-  document.getElementById("glossary-btn")?.classList.remove("active");
+  const btn = document.getElementById("glossary-btn");
+  btn?.classList.remove("active");
+  btn?.setAttribute("aria-expanded", "false");
 }
 
-function toggleMobileMenu() {
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("mobile-overlay");
-  if (!sidebar || !overlay) return;
+// ── Editions panel (replaces sidebar) ────────────────────────────────────────
 
-  const isOpen = sidebar.classList.toggle("mobile-open");
-  overlay.classList.toggle("visible", isOpen);
+function toggleEditionsPanel() {
+  const panel = document.getElementById("editions-panel");
+  if (!panel) return;
+  if (panel.hasAttribute("hidden")) openEditionsPanel();
+  else closeEditionsPanel();
 }
 
-function closeMobileMenu() {
-  document.getElementById("sidebar")?.classList.remove("mobile-open");
-  document.getElementById("mobile-overlay")?.classList.remove("visible");
+function openEditionsPanel() {
+  const panel = document.getElementById("editions-panel");
+  const trigger = document.getElementById("editions-trigger");
+  if (!panel) return;
+  modalReturnFocus = document.activeElement;
+  panel.removeAttribute("hidden");
+  panel.classList.add("open");
+  trigger?.setAttribute("aria-expanded", "true");
+  // Focus the active edition card so keyboard users land somewhere useful
+  const active =
+    panel.querySelector(".edition-card--active") ||
+    panel.querySelector(".edition-card");
+  active?.focus();
 }
 
-function toggleFilter(tagId) {
-  if (activeFilters.has(tagId)) activeFilters.delete(tagId);
-  else activeFilters.add(tagId);
-  applyFilters();
+function closeEditionsPanel() {
+  const panel = document.getElementById("editions-panel");
+  const trigger = document.getElementById("editions-trigger");
+  if (!panel) return;
+  panel.classList.remove("open");
+  panel.setAttribute("hidden", "");
+  trigger?.setAttribute("aria-expanded", "false");
+  if (modalReturnFocus && typeof modalReturnFocus.focus === "function") {
+    modalReturnFocus.focus();
+    modalReturnFocus = null;
+  }
 }
 
-function clearFilters() {
-  activeFilters.clear();
-  applyFilters();
-}
-
-function applyFilters() {
-  document.querySelectorAll(".filter-pill[data-tag]").forEach((pill) => {
-    pill.classList.toggle("active", activeFilters.has(pill.dataset.tag));
-  });
-  document
-    .getElementById("filter-all")
-    ?.classList.toggle("active", activeFilters.size === 0);
-  document.querySelectorAll(".sidebar-item[data-id]").forEach((item) => {
-    const matches =
-      activeFilters.size === 0 ||
-      [...activeFilters].some((tag) =>
-        newsletterTags[item.dataset.id]?.has(tag),
-      );
-    item.classList.toggle("dimmed", !matches);
-  });
-}
-
-function toggleYearGroup(year) {
-  document
-    .querySelector(`.sidebar-year-group[data-year="${year}"]`)
-    ?.classList.toggle("collapsed");
-}
-
-function toggleMoreMonths(year) {
-  const group = document.querySelector(
-    `.sidebar-year-group[data-year="${year}"]`,
-  );
-  if (!group) return;
-  const isExpanded = group.classList.toggle("months-expanded");
-  const btn = group.querySelector(".sidebar-show-more");
-  if (btn)
-    btn.textContent = isExpanded ? "Show less" : `+ ${btn.dataset.extra} more`;
-}
+// ── Export menu ──────────────────────────────────────────────────────────────
 
 function toggleExportMenu() {
-  document.getElementById("export-menu")?.classList.toggle("open");
+  const menu = document.getElementById("export-menu");
+  const trigger = document.getElementById("export-trigger");
+  if (!menu) return;
+  const isOpen = menu.classList.toggle("open");
+  trigger?.setAttribute("aria-expanded", String(isOpen));
 }
 
 function closeExportMenu() {
   document.getElementById("export-menu")?.classList.remove("open");
+  document
+    .getElementById("export-trigger")
+    ?.setAttribute("aria-expanded", "false");
 }
 
 function triggerPrint() {
   closeExportMenu();
   window.print();
 }
+
+// ── Export (HTML) — DRY refactor lands in Phase 5 ────────────────────────────
 
 function exportRenderHSSection(hs, isLast) {
   const m = tagMeta[hs.tagId] || {};
@@ -374,13 +344,15 @@ function exportAsHTML() {
       .join("");
   }
 
+  const editionLabel = `Edition ${String(nl.edition).padStart(2, "0")}`;
   const bodyHTML = `
     <div style="width:100%;box-sizing:border-box;padding:48px 32px;font-family:'Inter',-apple-system,sans-serif;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#ae530f;margin-bottom:14px;">${nl.date}</div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#ae530f;margin-bottom:14px;">${editionLabel} · ${nl.date}</div>
       <h1 style="font-family:'Lexend',sans-serif;font-size:32px;font-weight:800;line-height:1.1;color:#000;letter-spacing:-0.03em;margin:0 0 14px;">${nl.title}</h1>
       <p style="font-size:15px;color:#666;line-height:1.75;margin:0 0 28px;">${nl.description}</p>
       <hr style="height:1px;background:#ebebeb;border:none;margin-bottom:32px;">
       ${topicsBodyHtml}
+      <div style="margin-top:48px;padding-top:24px;border-top:1px solid #ebebeb;font-size:11px;color:#767676;text-align:center;">Suger Cube · ${editionLabel} · ${nl.date}</div>
     </div>`;
   const html = `<!doctype html>
 <html lang="en">
@@ -399,136 +371,135 @@ function exportAsHTML() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `suger-cube-${nl.id}.html`;
+  a.download = `suger-cube-${nlSlug(nl.id)}.html`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
+// ── Dark mode ────────────────────────────────────────────────────────────────
+
 function toggleDarkMode() {
   const isDark = document.body.classList.toggle("dark-mode");
   localStorage.setItem("dark-mode", isDark ? "1" : "0");
+  document
+    .getElementById("dark-mode-btn")
+    ?.setAttribute("aria-pressed", String(isDark));
 }
 
 function initDarkMode() {
   if (localStorage.getItem("dark-mode") === "1") {
     document.body.classList.add("dark-mode");
+    document
+      .getElementById("dark-mode-btn")
+      ?.setAttribute("aria-pressed", "true");
   }
 }
 
-function handleSearch(query) {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    currentSearch = query.trim().toLowerCase();
-    applySearch();
-  }, 250);
-}
+// ── Onboarding ───────────────────────────────────────────────────────────────
 
-function applySearch() {
-  const terms = currentSearch ? currentSearch.split(/\s+/).filter(Boolean) : [];
-
-  if (terms.length === 0) {
-    document.querySelectorAll(".sidebar-item[data-id]").forEach((item) => {
-      item.classList.remove("search-dimmed");
-    });
-    clearHighlights(document.getElementById("main-content"));
+function initOnboarding() {
+  const seen = localStorage.getItem("suger-cube-onboarded");
+  if (seen) {
+    activePersona = localStorage.getItem("suger-cube-persona") || "all";
+    document.getElementById("onboarding")?.classList.add("onb-hidden");
+    syncPersonaPills();
+    applyPersonaToFeed();
     return;
   }
+  // Onboarding overlay is visible by default — focus the first CTA
+  setTimeout(() => {
+    document.querySelector("#onb-step1 .onb-btn")?.focus();
+  }, 100);
+}
 
-  document.querySelectorAll(".sidebar-item[data-id]").forEach((item) => {
-    const nl = newsletters.find((n) => n.id === item.dataset.id);
-    const score = nl ? scoreNewsletter(nl, terms) : 0;
-    item.classList.toggle("search-dimmed", score === 0);
+function onbGoStep(n) {
+  document
+    .querySelectorAll(".onb-step")
+    .forEach((s) => s.classList.remove("active"));
+  const step = document.getElementById("onb-step" + n);
+  step?.classList.add("active");
+  // Move focus to the first focusable element in the new step
+  setTimeout(() => {
+    step?.querySelector(".onb-persona, .onb-btn")?.focus();
+  }, 50);
+}
+
+function onbSelectPersona(persona, el) {
+  document
+    .querySelectorAll(".onb-persona")
+    .forEach((c) => c.classList.remove("sel-explorer", "sel-tracker"));
+  el.classList.add("sel-" + persona);
+  activePersona = persona;
+  const btn = document.getElementById("onb-continue-btn");
+  if (btn) btn.disabled = false;
+}
+
+function onbEnterApp() {
+  localStorage.setItem("suger-cube-onboarded", "1");
+  localStorage.setItem("suger-cube-persona", activePersona);
+  document.getElementById("onboarding")?.classList.add("onb-hidden");
+  syncPersonaPills();
+  applyPersonaToFeed();
+  document.getElementById("main-content")?.focus();
+}
+
+function onbSkip() {
+  activePersona = "all";
+  localStorage.setItem("suger-cube-onboarded", "1");
+  localStorage.setItem("suger-cube-persona", "all");
+  document.getElementById("onboarding")?.classList.add("onb-hidden");
+  syncPersonaPills();
+  document.getElementById("main-content")?.focus();
+}
+
+// ── Persona + domain filters ─────────────────────────────────────────────────
+
+function setPersona(persona) {
+  activePersona = persona;
+  localStorage.setItem("suger-cube-persona", persona);
+  syncPersonaPills();
+  applyPersonaToFeed();
+}
+
+function syncPersonaPills() {
+  document.querySelectorAll(".pf-btn").forEach((b) => {
+    b.classList.remove("active-all", "active-explorer", "active-tracker");
+    b.setAttribute("aria-pressed", "false");
   });
-
-  const scored = newsletters
-    .map((nl) => ({ nl, score: scoreNewsletter(nl, terms) }))
-    .sort((a, b) => b.score - a.score);
-  const top = scored[0];
-
-  if (top && top.score > 0) {
-    if (top.nl.id !== activeNewsletterId) {
-      selectNewsletter(top.nl.id);
-    } else {
-      highlightKeywords(document.getElementById("main-content"), terms);
-    }
+  const activeBtn = document.getElementById("pf-" + activePersona);
+  if (activeBtn) {
+    activeBtn.classList.add("active-" + activePersona);
+    activeBtn.setAttribute("aria-pressed", "true");
   }
 }
 
-function scoreNewsletter(nl, terms) {
-  let score = 0;
-  const fields = [
-    { text: nl.title, weight: 10 },
-    { text: nl.description, weight: 5 },
-  ];
-  nl.topicIds.forEach((tid) => {
-    const topic = topicMap[tid];
-    if (!topic) return;
-    fields.push({ text: topic.title, weight: 3 });
-    if (topic.subtitle) fields.push({ text: topic.subtitle, weight: 2 });
-    if (topic.intro) fields.push({ text: topic.intro, weight: 1 });
-  });
-  [...(newsletterTags[nl.id] || [])].forEach((tagId) => {
-    const m = tagMeta[tagId];
-    if (m) fields.push({ text: m.label, weight: 8 });
-  });
-  terms.forEach((term) => {
-    fields.forEach(({ text, weight }) => {
-      if (text && text.toLowerCase().includes(term)) score += weight;
-    });
-  });
-  return score;
+function applyPersonaToFeed() {
+  const feedSections = document.getElementById("card-feed-sections");
+  const newsSection = document.getElementById("card-section-news");
+  const eduSection = document.getElementById("card-section-edu");
+  if (!feedSections || !newsSection || !eduSection) return;
+  if (activePersona === "explorer") {
+    feedSections.insertBefore(eduSection, newsSection);
+  } else {
+    feedSections.insertBefore(newsSection, eduSection);
+  }
 }
 
-function highlightKeywords(container, terms) {
-  if (!container || !terms.length) return;
-  clearHighlights(container);
-  const content = container.querySelector(".content");
-  if (!content) return;
-  const regex = new RegExp(`(${terms.map(escapeRegex).join("|")})`, "gi");
-  const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
-    acceptNode(node) {
-      const tag = node.parentElement?.tagName?.toLowerCase();
-      if (!tag || ["script", "style", "mark"].includes(tag))
-        return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    },
+function nlFilterDomain(domain, btn) {
+  document.querySelectorAll(".df-btn").forEach((b) => {
+    b.classList.remove("active");
+    b.setAttribute("aria-pressed", "false");
   });
-  const nodes = [];
-  let node;
-  while ((node = walker.nextNode())) nodes.push(node);
-  nodes.forEach((textNode) => {
-    const text = textNode.textContent;
-    if (!regex.test(text)) return;
-    regex.lastIndex = 0;
-    const frag = document.createDocumentFragment();
-    let last = 0;
-    let m;
-    while ((m = regex.exec(text)) !== null) {
-      if (m.index > last)
-        frag.appendChild(document.createTextNode(text.slice(last, m.index)));
-      const mark = document.createElement("mark");
-      mark.className = "search-highlight";
-      mark.textContent = m[0];
-      frag.appendChild(mark);
-      last = regex.lastIndex;
+  btn.classList.add("active");
+  btn.setAttribute("aria-pressed", "true");
+  document.querySelectorAll("#news-grid .card").forEach((c) => {
+    if (domain === "all") {
+      c.classList.remove("domain-hidden");
+      return;
     }
-    if (last < text.length)
-      frag.appendChild(document.createTextNode(text.slice(last)));
-    textNode.parentNode.replaceChild(frag, textNode);
+    const tags = (c.dataset.tags || "").split(" ").filter(Boolean);
+    c.classList.toggle("domain-hidden", !tags.includes(domain));
   });
-}
-
-function clearHighlights(container) {
-  if (!container) return;
-  container.querySelectorAll("mark.search-highlight").forEach((mark) => {
-    const parent = mark.parentNode;
-    parent.replaceChild(document.createTextNode(mark.textContent), mark);
-    parent.normalize();
-  });
-}
-
-function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
