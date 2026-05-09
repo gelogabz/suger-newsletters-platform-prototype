@@ -32,7 +32,8 @@ const topics = [
     id: "sample-may-ai-listings-surge",
     contentType: "news",
     featured: true,
-    title: "AI Agent Listings Are Proliferating — and Differentiation Is Already Getting Harder",
+    title:
+      "AI Agent Listings Are Proliferating — and Differentiation Is Already Getting Harder",
     subtitle:
       "30 days after GCP's Agent Marketplace launch, early signals on what converts and what doesn't",
     tags: ["aws", "azure", "gcp"],
@@ -77,7 +78,8 @@ const topics = [
   {
     id: "sample-may-fee-structures",
     contentType: "news",
-    title: "Three Marketplace Fee Changes That Directly Affect Your Net Revenue",
+    title:
+      "Three Marketplace Fee Changes That Directly Affect Your Net Revenue",
     subtitle:
       "GCP's variable rate, Azure's renewal discount, and AWS's partial disbursements — modeled",
     tags: ["aws", "azure", "gcp"],
@@ -122,8 +124,7 @@ const topics = [
   {
     id: "sample-may-cosell-readiness",
     contentType: "educational",
-    title:
-      "What Co-Sell Ready Actually Means — Most ISVs Aren't There",
+    title: "What Co-Sell Ready Actually Means — Most ISVs Aren't There",
     subtitle:
       "The difference between having a marketplace listing and having a co-sell motion",
     tags: ["aws", "azure", "gcp"],
@@ -150,8 +151,7 @@ const topics = [
       },
       {
         tagId: "gcp",
-        headline:
-          "GCP Rewards Customer Success Reporting, Not Just Bookings",
+        headline: "GCP Rewards Customer Success Reporting, Not Just Bookings",
         body: "GCP co-sell engagement unlocks at Partner status in the Sell track of Partner Advantage, with Premier Partner status adding a dedicated PDM and funded campaigns. Unlike AWS and Azure, GCP measures ISV performance through Customer Success Plans tied to adoption outcomes — quantified customer wins, not just transaction volume. ISVs who report documented adoption metrics get co-sell prioritization that transact-volume-only reporters don't. If you don't have a quarterly Partner Advantage review scheduled with your GCP PDM, that's the first gap to close.",
         source: {
           label: "Google Cloud Partner Advantage",
@@ -286,7 +286,8 @@ const topics = [
       },
       {
         tagId: "gcp",
-        headline: "GCP Committed Spend: 100% Drawdown Through MCPO Since June 2025",
+        headline:
+          "GCP Committed Spend: 100% Drawdown Through MCPO Since June 2025",
         body: "GCP's committed spend program lets customers apply GCP Marketplace purchases against their committed spend obligations, up to a 25% cap. Since June 2025, qualifying MCPO channel purchases count at 100% drawdown — the same rate as direct purchases — making channel deals as commitment-friendly as direct ones. GCP's committed spend pool is smaller than AWS EDP or Azure MACC in absolute terms, but it's growing as AI infrastructure adoption drives larger GCP commits. Ask your channel team whether deals qualify for MCPO before structuring them as direct offers.",
         source: {
           label: "GCP Marketplace SaaS Listing Guide",

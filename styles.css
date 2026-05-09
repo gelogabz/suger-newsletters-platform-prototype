@@ -160,7 +160,9 @@ body {
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: border-color 0.15s, color 0.15s;
+    transition:
+        border-color 0.15s,
+        color 0.15s;
 }
 
 .editions-trigger:hover {
@@ -251,7 +253,9 @@ body {
     line-height: 1;
     cursor: pointer;
     color: var(--gray-500);
-    transition: background 0.12s, color 0.12s;
+    transition:
+        background 0.12s,
+        color 0.12s;
 }
 
 .editions-panel-close:hover {
@@ -278,7 +282,9 @@ body {
     text-align: left;
     cursor: pointer;
     font-family: inherit;
-    transition: border-color 0.15s, background 0.15s;
+    transition:
+        border-color 0.15s,
+        background 0.15s;
 }
 
 .edition-card:hover {
@@ -297,16 +303,17 @@ body {
     gap: 10px;
 }
 
-.edition-card-num {
-    font-size: 10px;
+.edition-card-date {
+    font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--orange-text);
+    color: var(--black);
 }
 
-.edition-card-date {
-    font-size: 11px;
+.edition-card-num {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--gray-400);
 }
 
@@ -1243,8 +1250,12 @@ body.dark-mode .scroll-logo-ghost {
 /* ── Onboarding overlay ── */
 
 @keyframes onb-fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .onboarding-overlay {
@@ -1377,8 +1388,12 @@ body.dark-mode .scroll-logo-ghost {
     margin-bottom: 12px;
 }
 
-.icon-explorer { background: rgba(59, 130, 246, 0.12); }
-.icon-tracker { background: rgba(242, 106, 28, 0.12); }
+.icon-explorer {
+    background: rgba(59, 130, 246, 0.12);
+}
+.icon-tracker {
+    background: rgba(242, 106, 28, 0.12);
+}
 
 .persona-name {
     font-family: "Lexend", sans-serif;
@@ -1387,8 +1402,12 @@ body.dark-mode .scroll-logo-ghost {
     margin-bottom: 4px;
 }
 
-.explorer-name { color: #3b82f6; }
-.tracker-name { color: var(--orange); }
+.explorer-name {
+    color: #3b82f6;
+}
+.tracker-name {
+    color: var(--orange);
+}
 
 .persona-tagline {
     font-size: 10px;
@@ -1420,8 +1439,13 @@ body.dark-mode .scroll-logo-ghost {
     margin-bottom: 12px;
 }
 
-.onb-btn:hover { background: #e05a0a; }
-.onb-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.onb-btn:hover {
+    background: #e05a0a;
+}
+.onb-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
 
 .onb-skip {
     display: block;
@@ -1437,7 +1461,9 @@ body.dark-mode .scroll-logo-ghost {
     font-family: inherit;
 }
 
-.onb-skip:hover { color: var(--white); }
+.onb-skip:hover {
+    color: var(--white);
+}
 
 /* ── Persona pills (masthead) ── */
 
@@ -1464,7 +1490,9 @@ body.dark-mode .scroll-logo-ghost {
     white-space: nowrap;
 }
 
-.pf-btn:hover { color: var(--white); }
+.pf-btn:hover {
+    color: var(--white);
+}
 
 .pf-btn.active-all {
     background: #2a2a2a;
@@ -1648,7 +1676,9 @@ body.dark-mode .scroll-logo-ghost {
     letter-spacing: -0.01em;
 }
 
-.card-featured .card-title { font-size: 18px; }
+.card-featured .card-title {
+    font-size: 18px;
+}
 
 .card-preview {
     font-size: 13px;
@@ -1661,7 +1691,9 @@ body.dark-mode .scroll-logo-ghost {
     flex-shrink: 0;
 }
 
-.card-featured .card-preview { -webkit-line-clamp: 4; }
+.card-featured .card-preview {
+    -webkit-line-clamp: 4;
+}
 
 .card-footer {
     display: flex;
@@ -1675,22 +1707,9 @@ body.dark-mode .scroll-logo-ghost {
     color: var(--gray-400);
 }
 
-.relevancy {
-    display: flex;
-    gap: 3px;
+.domain-hidden {
+    display: none !important;
 }
-
-.rel-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--gray-100);
-    flex-shrink: 0;
-}
-
-.rel-dot.filled { background: var(--orange); }
-
-.domain-hidden { display: none !important; }
 
 .card-cta {
     font-size: 11px;
@@ -1700,7 +1719,9 @@ body.dark-mode .scroll-logo-ghost {
     margin-left: auto;
 }
 
-.card-cta::after { content: " →"; }
+.card-cta::after {
+    content: " →";
+}
 
 /* ── Deep dive card variant ── */
 
@@ -1735,7 +1756,9 @@ body.dark-mode .scroll-logo-ghost {
     background: var(--gray-50);
 }
 
-.ql-icon { font-size: 18px; }
+.ql-icon {
+    font-size: 18px;
+}
 
 .ql-label {
     font-size: 12px;
@@ -1750,42 +1773,14 @@ body.dark-mode .scroll-logo-ghost {
     line-height: 1.4;
 }
 
-/* ── Articles divider ── */
-
-.articles-divider {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 32px;
-    padding-top: 4px;
-}
-
-.articles-divider-text {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gray-400);
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.articles-divider-line {
-    flex: 1;
-    height: 1px;
-    background: var(--gray-100);
-}
-
 /* ── Dark mode: card feed ── */
 
-body.dark-mode .section-label-line,
-body.dark-mode .articles-divider-line {
+body.dark-mode .section-label-line {
     background: #2a2a2a;
 }
 
 body.dark-mode .section-label-text,
-body.dark-mode .section-label-count,
-body.dark-mode .articles-divider-text {
+body.dark-mode .section-label-count {
     color: #555;
 }
 
@@ -1823,10 +1818,15 @@ body.dark-mode .card--deepdive {
     border-left-color: #3b82f6;
 }
 
-body.dark-mode .card-title { color: #e0e0e0; }
-body.dark-mode .card-preview { color: #888; }
-body.dark-mode .card-ts { color: #555; }
-body.dark-mode .rel-dot { background: #2a2a2a; }
+body.dark-mode .card-title {
+    color: #e0e0e0;
+}
+body.dark-mode .card-preview {
+    color: #888;
+}
+body.dark-mode .card-ts {
+    color: #555;
+}
 
 body.dark-mode .ql-item {
     background: #1c1c1c;
@@ -1838,8 +1838,12 @@ body.dark-mode .ql-item:hover {
     background: #1e1e1e;
 }
 
-body.dark-mode .ql-label { color: #e0e0e0; }
-body.dark-mode .ql-desc { color: #aaa; }
+body.dark-mode .ql-label {
+    color: #e0e0e0;
+}
+body.dark-mode .ql-desc {
+    color: #aaa;
+}
 
 /* ── Dark mode: editions panel ── */
 
@@ -1884,12 +1888,12 @@ body.dark-mode .edition-card-title {
     color: #e0e0e0;
 }
 
-body.dark-mode .edition-card-num {
-    color: var(--orange);
+body.dark-mode .edition-card-date {
+    color: #e0e0e0;
 }
 
-body.dark-mode .edition-card-date {
-    color: #aaa;
+body.dark-mode .edition-card-num {
+    color: #555;
 }
 
 /* ── Responsive ── */

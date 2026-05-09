@@ -11,12 +11,12 @@ function renderEditionCard(nl, isActive) {
       return `<span class="edition-card-tag" style="background:${m.badgeBg};color:${m.badgeText}">${m.label || tagId}</span>`;
     })
     .join("");
-  const editionLabel = `Edition ${String(nl.edition).padStart(2, "0")}`;
+  const editionNum = `Edition ${String(nl.edition).padStart(2, "0")}`;
   return `
     <button class="edition-card${isActive ? " edition-card--active" : ""}" data-id="${nl.id}" onclick="selectEditionFromPanel('${nl.id}')">
       <div class="edition-card-meta">
-        <span class="edition-card-num">${editionLabel}</span>
         <span class="edition-card-date">${nl.date}</span>
+        <span class="edition-card-num">${editionNum}</span>
       </div>
       <div class="edition-card-title">${nl.title}</div>
       <div class="edition-card-tags">${tagsHtml}</div>
@@ -44,8 +44,6 @@ function renderEditionsPanel() {
 function renderLayout() {
   const activeNl =
     newsletters.find((n) => n.id === activeNewsletterId) || newsletters[0];
-  const activeEditionLabel = `Edition ${String(activeNl.edition).padStart(2, "0")}`;
-
   return `
     ${renderOnboarding()}
     ${renderEditionsPanel()}
@@ -56,7 +54,7 @@ function renderLayout() {
       </div>
       <div class="masthead-center">
         <button class="editions-trigger" id="editions-trigger" onclick="toggleEditionsPanel()" aria-haspopup="dialog" aria-expanded="false" aria-controls="editions-panel">
-          <span class="editions-trigger-label" id="editions-trigger-label">${activeEditionLabel}</span>
+          <span class="editions-trigger-label" id="editions-trigger-label">${activeNl.date}</span>
           <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1,1 5,5 9,1"/></svg>
         </button>
         <div class="pf-group" role="group" aria-label="Reader mode">
@@ -66,21 +64,6 @@ function renderLayout() {
         </div>
       </div>
       <div class="masthead-actions">
-        <div class="export-wrap">
-          <button class="masthead-action-btn" onclick="toggleExportMenu()" aria-label="Export edition" aria-haspopup="menu" aria-expanded="false" id="export-trigger">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          </button>
-          <div class="export-menu" id="export-menu" role="menu">
-            <button class="export-option" onclick="triggerPrint()" role="menuitem">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-              Print / Save PDF
-            </button>
-            <button class="export-option" onclick="exportAsHTML()" role="menuitem">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Export HTML
-            </button>
-          </div>
-        </div>
         <button class="masthead-action-btn" id="dark-mode-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" aria-pressed="false">
           <svg class="icon-moon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="icon-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -192,7 +175,7 @@ function renderSiteFooter() {
 function renderFeedView(nl) {
   const nlTopics = nl.topicIds.map((id) => topicMap[id]).filter(Boolean);
   const { news, educational } = groupTopicsByType(nlTopics);
-  const editionLabel = `Edition ${String(nl.edition).padStart(2, "0")} · ${nl.date}`;
+  const editionLabel = `${nl.date} · Edition ${String(nl.edition).padStart(2, "0")}`;
   return `
     <div class="content content--feed">
       <div class="nl-header">
@@ -215,7 +198,7 @@ function renderEditionPageContent(nl) {
   const nlTopics = nl.topicIds.map((id) => topicMap[id]).filter(Boolean);
   const { news, educational, mixed } = groupTopicsByType(nlTopics);
   const editionNum = String(nl.edition).padStart(2, "0");
-  const editionLabel = `Edition ${editionNum} · ${nl.date}`;
+  const editionLabel = `${nl.date} · Edition ${editionNum}`;
   const feedUrl = `../index.html#edition-${editionNum}`;
 
   let topicsHtml = "";
@@ -260,7 +243,8 @@ function renderEditionPageContent(nl) {
 
 function renderEditionPageNav(nl) {
   const nlIndex = newsletters.findIndex((n) => n.id === nl.id);
-  const prevNl = nlIndex < newsletters.length - 1 ? newsletters[nlIndex + 1] : null;
+  const prevNl =
+    nlIndex < newsletters.length - 1 ? newsletters[nlIndex + 1] : null;
   const nextNl = nlIndex > 0 ? newsletters[nlIndex - 1] : null;
   if (!prevNl && !nextNl) return "";
   return `
@@ -288,7 +272,7 @@ function renderEditionPageNav(nl) {
 
 function renderEditionPageLayout(nl) {
   const editionNum = String(nl.edition).padStart(2, "0");
-  const editionLabel = `Edition ${editionNum} · ${nl.date}`;
+  const editionLabel = `${nl.date} · Edition ${editionNum}`;
   return `
     <header class="masthead" role="banner">
       <div class="masthead-brand">
@@ -303,6 +287,21 @@ function renderEditionPageLayout(nl) {
         <span class="edition-page-label">${editionLabel}</span>
       </div>
       <div class="masthead-actions">
+        <div class="export-wrap">
+          <button class="masthead-action-btn" onclick="toggleExportMenu()" aria-label="Export edition" aria-haspopup="menu" aria-expanded="false" id="export-trigger">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+          <div class="export-menu" id="export-menu" role="menu">
+            <button class="export-option" onclick="triggerPrint()" role="menuitem">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print / Save PDF
+            </button>
+            <button class="export-option" onclick="exportAsHTML()" role="menuitem">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export HTML
+            </button>
+          </div>
+        </div>
         <button class="masthead-action-btn" id="dark-mode-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode" aria-pressed="false">
           <svg class="icon-moon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="icon-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -430,11 +429,6 @@ function renderSectionLabel(text, count) {
 }
 
 function renderNewsCard(topic, isFeatured, nlDate) {
-  const hsCount = (topic.hyperscalers || []).length;
-  const dotsCount = isFeatured ? 5 : Math.min(hsCount + 2, 4);
-  const dots = Array.from({ length: 5 }, (_, i) =>
-    `<span class="rel-dot${i < dotsCount ? " filled" : ""}"></span>`,
-  ).join("");
   const tagsHtml = (topic.tags || [])
     .map((tagId) => {
       const m = tagMeta[tagId] || {};
@@ -446,9 +440,10 @@ function renderNewsCard(topic, isFeatured, nlDate) {
     (topic.intro || "").slice(0, 150) +
     ((topic.intro || "").length > 150 ? "…" : "");
   const tagsAttr = (topic.tags || []).join(" ");
-
   const activeNl = newsletters.find((n) => n.id === activeNewsletterId);
-  const href = activeNl ? `editions/${editionFileName(activeNl)}#${topic.id}` : "#";
+  const href = activeNl
+    ? `editions/${editionFileName(activeNl)}#${topic.id}`
+    : "#";
 
   return `
     <a class="card${isFeatured ? " card-featured" : ""}" href="${href}" data-tags="${tagsAttr}">
@@ -457,7 +452,6 @@ function renderNewsCard(topic, isFeatured, nlDate) {
       <p class="card-preview">${preview}</p>
       <div class="card-footer">
         <span class="card-ts">${nlDate}</span>
-        <span class="relevancy" aria-label="Relevance ${dotsCount} of 5">${dots}</span>
         <span class="card-cta">Read more</span>
       </div>
     </a>`;
@@ -475,7 +469,9 @@ function renderDeepDiveCard(topic, nlDate) {
     ((topic.intro || "").length > 200 ? "…" : "");
   const tagsAttr = (topic.tags || []).join(" ");
   const activeNl = newsletters.find((n) => n.id === activeNewsletterId);
-  const href = activeNl ? `editions/${editionFileName(activeNl)}#${topic.id}` : "#";
+  const href = activeNl
+    ? `editions/${editionFileName(activeNl)}#${topic.id}`
+    : "#";
   return `
     <a class="card card--deepdive" href="${href}" data-tags="${tagsAttr}">
       <div class="card-badges">
@@ -511,10 +507,7 @@ function renderCardFeed(nl, news, educational) {
   let newsSectionHtml = "";
   if (news.length > 0) {
     const orderedNews = news.some((t) => t.featured)
-      ? [
-          ...news.filter((t) => t.featured),
-          ...news.filter((t) => !t.featured),
-        ]
+      ? [...news.filter((t) => t.featured), ...news.filter((t) => !t.featured)]
       : news;
     newsSectionHtml = `
       <div id="card-section-news" class="card-section">
@@ -570,4 +563,139 @@ function renderQuickLinks() {
         <div class="ql-desc">Product updates, marketplace insights, and guides</div>
       </a>
     </div>`;
+}
+
+// ── Export menu ──────────────────────────────────────────────────────────────
+
+function toggleExportMenu() {
+  const menu = document.getElementById("export-menu");
+  const trigger = document.getElementById("export-trigger");
+  if (!menu) return;
+  const isOpen = menu.classList.toggle("open");
+  trigger?.setAttribute("aria-expanded", String(isOpen));
+}
+
+function closeExportMenu() {
+  document.getElementById("export-menu")?.classList.remove("open");
+  document
+    .getElementById("export-trigger")
+    ?.setAttribute("aria-expanded", "false");
+}
+
+function triggerPrint() {
+  closeExportMenu();
+  window.print();
+}
+
+function exportRenderHSSection(hs, isLast) {
+  const m = tagMeta[hs.tagId] || {};
+  const sourceHtml = hs.source
+    ? `<a href="${hs.source.url}" style="display:inline-block;margin-top:10px;font-size:11px;color:#767676;text-decoration:none;" target="_blank" rel="noopener noreferrer">↗ ${hs.source.label}</a>`
+    : "";
+  return `
+    <div style="padding:22px 0;${isLast ? "" : "border-bottom:1px solid #f5f5f5;"}">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;">
+        <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;padding:3px 8px;background:${m.badgeBg};color:${m.badgeText};">${m.label || hs.tagId}</span>
+        <h3 style="font-family:'Lexend',sans-serif;font-size:15px;font-weight:700;color:#000;line-height:1.3;letter-spacing:-0.01em;margin:0;">${hs.headline}</h3>
+      </div>
+      <p style="font-size:14px;line-height:1.8;color:#666;margin:0;">${hs.body}</p>
+      ${sourceHtml}
+    </div>`;
+}
+
+function exportRenderTopic(topic, number, nlDate) {
+  const num = String(number).padStart(2, "0");
+  const isEducational = topic.contentType === "educational";
+  const badgeStyle = isEducational
+    ? "font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;padding:2px 7px;background:#f3f4f6;color:#767676;margin-left:auto;white-space:nowrap;"
+    : "font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;padding:2px 7px;background:rgba(242,106,28,0.1);color:#ae530f;margin-left:auto;white-space:nowrap;";
+  const badgeLabel = isEducational
+    ? "Deep dive"
+    : `What's new${nlDate ? ` · ${nlDate}` : ""}`;
+  const tagsHtml = topic.tags
+    .map((tagId) => {
+      const m = tagMeta[tagId] || {};
+      return `<span style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:4px;padding:2px 7px;background:${m.badgeBg};color:${m.badgeText};">${m.label || tagId}</span>`;
+    })
+    .join(" ");
+  const hsSections = topic.hyperscalers
+    .map((hs, i) =>
+      exportRenderHSSection(hs, i === topic.hyperscalers.length - 1),
+    )
+    .join("");
+  return `
+    <div style="background:#fff;border-radius:12px;padding:36px 40px;margin-bottom:16px;border:1px solid #ebebeb;font-family:'Inter',-apple-system,sans-serif;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="font-size:11px;font-weight:700;color:#767676;letter-spacing:0.06em;">${num}</span>
+        <div style="display:flex;gap:5px;">${tagsHtml}</div>
+        <span style="${badgeStyle}">${badgeLabel}</span>
+      </div>
+      <h2 style="font-family:'Lexend',sans-serif;font-size:22px;font-weight:800;line-height:1.2;color:#000;letter-spacing:-0.02em;margin:0 0 5px;">${topic.title}</h2>
+      <p style="font-size:13px;color:#767676;font-style:italic;margin:0 0 20px;">${topic.subtitle}</p>
+      <p style="font-size:14px;color:#666;line-height:1.8;padding-bottom:24px;border-bottom:1px solid #ebebeb;margin:0 0 4px;">${topic.intro}</p>
+      <div style="margin-bottom:24px;">${hsSections}</div>
+      <div style="background:rgba(242,106,28,0.08);border:1px solid rgba(242,106,28,0.2);border-left:3px solid #f26a1c;border-radius:0 8px 8px 0;padding:18px 22px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#ae530f;margin-bottom:8px;">What this means for you</div>
+        <p style="font-size:14px;line-height:1.8;color:#333;margin:0;">${topic.implications}</p>
+      </div>
+    </div>`;
+}
+
+function exportAsHTML() {
+  closeExportMenu();
+  const nl = newsletters.find((n) => n.id === activeNewsletterId);
+  if (!nl) return;
+  const nlTopics = nl.topicIds.map((id) => topicMap[id]).filter(Boolean);
+  const {
+    news: newsTopics,
+    educational: eduTopics,
+    mixed,
+  } = groupTopicsByType(nlTopics);
+
+  let topicsBodyHtml = "";
+  if (mixed) {
+    let num = 1;
+    const newsSectionHeader = `<div style="display:flex;align-items:center;gap:12px;padding:0 0 14px;margin-bottom:20px;border-bottom:2px solid rgba(242,106,28,0.35);"><span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#ae530f;">What's new</span><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#767676;margin-left:auto;">${nl.date}</span></div>`;
+    const eduSectionHeader = `<div style="display:flex;align-items:center;gap:12px;padding:0 0 14px;margin-bottom:20px;border-bottom:2px solid #DBEAFE;"><span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.14em;color:#1D4ED8;">Deep dive</span></div>`;
+    topicsBodyHtml = `
+      <div style="margin-bottom:8px;">${newsSectionHeader}${newsTopics.map((t) => exportRenderTopic(t, num++, nl.date)).join("")}</div>
+      <div style="margin-bottom:8px;">${eduSectionHeader}${eduTopics.map((t) => exportRenderTopic(t, num++, nl.date)).join("")}</div>`;
+  } else {
+    topicsBodyHtml = nlTopics
+      .map((t, i) => exportRenderTopic(t, i + 1, nl.date))
+      .join("");
+  }
+
+  const editionLabel = `${nl.date} · Edition ${String(nl.edition).padStart(2, "0")}`;
+  const bodyHTML = `
+    <div style="width:100%;box-sizing:border-box;padding:48px 32px;font-family:'Inter',-apple-system,sans-serif;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#ae530f;margin-bottom:14px;">${editionLabel}</div>
+      <h1 style="font-family:'Lexend',sans-serif;font-size:32px;font-weight:800;line-height:1.1;color:#000;letter-spacing:-0.03em;margin:0 0 14px;">${nl.title}</h1>
+      <p style="font-size:15px;color:#666;line-height:1.75;margin:0 0 28px;">${nl.description}</p>
+      <hr style="height:1px;background:#ebebeb;border:none;margin-bottom:32px;">
+      ${topicsBodyHtml}
+      <div style="margin-top:48px;padding-top:24px;border-top:1px solid #ebebeb;font-size:11px;color:#767676;text-align:center;">Suger Cube · ${editionLabel} · ${nl.date}</div>
+    </div>`;
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${nl.title} — Suger Cube</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body style="font-family:'Inter',-apple-system,sans-serif;background:#f5f5f5;color:#111;line-height:1.6;margin:0;padding:0;">
+  ${bodyHTML}
+</body>
+</html>`;
+  const blob = new Blob([html], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `suger-cube-edition-${String(nl.edition).padStart(2, "0")}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }

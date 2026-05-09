@@ -24,13 +24,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (localStorage.getItem("dark-mode") === "1") {
     document.body.classList.add("dark-mode");
-    document.getElementById("dark-mode-btn")?.setAttribute("aria-pressed", "true");
+    document
+      .getElementById("dark-mode-btn")
+      ?.setAttribute("aria-pressed", "true");
   }
 
   initEditionScrollListener();
 
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".export-wrap")) closeExportMenu();
+  });
+
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
+      const exportMenu = document.getElementById("export-menu");
+      if (exportMenu?.classList.contains("open")) {
+        closeExportMenu();
+        return;
+      }
       const glossaryPanel = document.getElementById("glossary-panel");
       if (glossaryPanel?.classList.contains("open")) toggleGlossary();
     }
@@ -53,11 +64,15 @@ document.addEventListener("DOMContentLoaded", () => {
 function toggleDarkMode() {
   const isDark = document.body.classList.toggle("dark-mode");
   localStorage.setItem("dark-mode", isDark ? "1" : "0");
-  document.getElementById("dark-mode-btn")?.setAttribute("aria-pressed", String(isDark));
+  document
+    .getElementById("dark-mode-btn")
+    ?.setAttribute("aria-pressed", String(isDark));
 }
 
 function scrollMainToTop() {
-  document.getElementById("main-content")?.scrollTo({ top: 0, behavior: "smooth" });
+  document
+    .getElementById("main-content")
+    ?.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function initEditionScrollListener() {
